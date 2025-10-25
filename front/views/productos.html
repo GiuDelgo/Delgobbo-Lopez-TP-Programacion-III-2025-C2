@@ -19,7 +19,7 @@
       </div>
     </nav>
     <main class="container-fluid py-4">
-      <h1 class="mb-4">Bueno</h1>
+      <h1 class="mb-4">PRODUCTOS</h1>
       <section class="productos">
         <h2 class="titulo-fila">Producto A</h2>
         <div class="contenedor-fila">
@@ -39,7 +39,12 @@
           <button class="flecha derecha" onclick="moverFila('filaB', 1)">&#10095;</button>
         </div>
       </section>
-      <script src="/front/scripts/main.js"></script>
+      <hr class="linea-divisoria" />
+      <div id="div-button-addon2">
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Continuar al Carrito</button>
+      </div>
+      <script type="module" src="/front/scripts/main.js"></script>
+      <script type="module" src="/front/scripts/producto.js"></script>
       <script>
         function moverFila(idFila, dir) {
           const fila = document.getElementById(idFila);

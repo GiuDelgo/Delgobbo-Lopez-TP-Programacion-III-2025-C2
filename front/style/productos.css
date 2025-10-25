@@ -154,7 +154,7 @@ h2.titulo-fila {
   width: 80px;
 }
 
-.btn-agregar {
+.btn-actualizar {
   width: 100%;
   background-color: #a0f03c;
   color: #000;
@@ -166,6 +166,21 @@ h2.titulo-fila {
   transition: background-color 0.2s ease;
 }
 
-.btn-agregar:hover {
+.btn-actualizar:hover {
   background-color: #8bd033;
+}
+
+#div-button-addon2{
+  display: flex;
+  justify-content:center;
+  padding: 80px;
+}
+
+#button-addon2{
+  justify-content: center;
+  height: 80px;
+  width: 40%;
+  font-size: 2rem;
+  font-weight: 700;
+  border-radius: 5px;
 }

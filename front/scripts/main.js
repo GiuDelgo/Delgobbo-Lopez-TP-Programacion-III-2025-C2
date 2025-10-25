@@ -1,30 +1,36 @@
-async function cargarProductos() {
+import { Producto } from "./producto.js";
+
+const rutaProductos = "/front/scripts/productos.json";
+const maxProductos = 10;
+
+async function traerProductos() {
   try {
-    const res = await fetch("/front/scripts/productos.json");
+    const res = await fetch(rutaProductos);
     const data = await res.json();
 
     const contenedorA = document.getElementById("filaA");
     const contenedorB = document.getElementById("filaB");
 
-    function crearCard(p) {
-      return `
-            <div class="card">
-            <img src="${p.img}" alt="${p.nombre}">
-            <div class="card-body">
-                <h5 class="card-title">${p.nombre}</h5>
-                <p class="card-text">$${p.precio}</p>
-                <input type="number" value="0" min="0">
-                <button class="btn-agregar">Agregar</button>
-            </div>
-            </div>
-        `;
-    }
+    data.filaA.slice(0, maxProductos).forEach(producto => {
+        const productoINST = new Producto (producto.id, producto.nombre, producto.precio, producto.img);
+        const cardElement = productoINST.crearCard();
+        contenedorA.appendChild(cardElement);
+    });
 
-    contenedorA.innerHTML = data.filaA.map(crearCard).join("");
-    contenedorB.innerHTML = data.filaB.map(crearCard).join("");
+    data.filaB.slice(0, maxProductos).forEach(producto => {
+        const productoINST = new Producto (producto.id, producto.nombre, producto.precio, producto.img)
+        const cardElement = productoINST.crearCard();
+        contenedorB.appendChild(cardElement);
+    });
+
+    Producto.inicializarEventos();
+
   } catch (error) {
     console.error("Error cargando productos:", error);
   }
 }
 
-cargarProductos();
+traerProductos();
+
+
+
