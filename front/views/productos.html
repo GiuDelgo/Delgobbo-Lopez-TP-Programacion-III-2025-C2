@@ -18,37 +18,35 @@
         <p>LOPEZ ALEGRE, FRANCO - DELGOBBO ROSSI, GIULIANA</p>
       </div>
     </nav>
-    <main class="container py-4">
-      <h1 class="mb-4">Productos</h1>
+    <main class="container-fluid py-4">
+      <h1 class="mb-4">Bueno</h1>
       <section class="productos">
         <h2 class="titulo-fila">Producto A</h2>
-        <div class="fila-productos">
-          <div class="card">
-            <img src="./imgs/Paleta_Colores.jpg" alt="Paleta de colores" />
-            <div class="card-body">
-              <h5 class="card-title">Paleta de colores</h5>
-              <p class="card-text">$1500</p>
-              <input type="number" value="1" min="1" />
-              <button class="btn-agregar">Agregar</button>
-            </div>
-          </div>
+        <div class="contenedor-fila">
+          <button class="flecha izquierda" onclick="moverFila('filaA', -1)">&#10094;</button>
+          <div id="filaA" class="fila-productos"></div>
+
+          <button class="flecha derecha" onclick="moverFila('filaA', 1)">&#10095;</button>
         </div>
 
         <hr class="linea-divisoria" />
 
         <h2 class="titulo-fila">Producto B</h2>
-        <div class="fila-productos">
-          <div class="card">
-            <img src="./imgs/producto2.jpg" alt="Producto 2" />
-            <div class="card-body">
-              <h5 class="card-title">Producto 2</h5>
-              <p class="card-text">$2500</p>
-              <input type="number" value="1" min="1" />
-              <button class="btn-agregar">Agregar</button>
-            </div>
-          </div>
+        <div class="contenedor-fila">
+          <button class="flecha izquierda" onclick="moverFila('filaB', -1)">&#10094;</button>
+
+          <div id="filaB" class="fila-productos"></div>
+          <button class="flecha derecha" onclick="moverFila('filaB', 1)">&#10095;</button>
         </div>
       </section>
+      <script src="/front/scripts/main.js"></script>
+      <script>
+        function moverFila(idFila, dir) {
+          const fila = document.getElementById(idFila);
+          const width = fila.clientWidth;
+          fila.scrollBy({ left: dir * width, behavior: "smooth" });
+        }
+      </script>
     </main>
   </body>
 </html>
