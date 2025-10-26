@@ -9,6 +9,7 @@
   </head>
   <body>
     <nav aria-label="Barra de navegación principal">
+      <p id="nombre-usuario" class="text-light"></p>
       <div id="izquierda">
         <a href="./bienvenida.html" aria-label="Ir al inicio">
           <img src="../imgs/papota_logo_chico.png" alt="Papota" />
@@ -23,35 +24,27 @@
       <section class="productos">
         <h2 class="titulo-fila">Producto A</h2>
         <div class="contenedor-fila">
-          <button class="flecha izquierda" onclick="moverFila('filaA', -1)">&#10094;</button>
+          <button class="flecha izquierda btn-mover" data-fila="filaA" data-dir="-1">&#10094;</button>
           <div id="filaA" class="fila-productos"></div>
-
-          <button class="flecha derecha" onclick="moverFila('filaA', 1)">&#10095;</button>
+          <button class="flecha derecha btn-mover" data-fila="filaA" data-dir="1">&#10095;</button> 
         </div>
 
         <hr class="linea-divisoria" />
 
         <h2 class="titulo-fila">Producto B</h2>
         <div class="contenedor-fila">
-          <button class="flecha izquierda" onclick="moverFila('filaB', -1)">&#10094;</button>
-
+          <button class="flecha izquierda btn-mover" data-fila="filaB" data-dir="-1">&#10094;</button>
           <div id="filaB" class="fila-productos"></div>
-          <button class="flecha derecha" onclick="moverFila('filaB', 1)">&#10095;</button>
+          <button class="flecha derecha btn-mover" data-fila="filaB" data-dir="1">&#10095;</button>
         </div>
       </section>
       <hr class="linea-divisoria" />
       <div id="div-button-addon2">
-      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Continuar al Carrito</button>
+      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Continuar al Carrito SIS</button>
       </div>
-      <script type="module" src="/front/scripts/main.js"></script>
-      <script type="module" src="/front/scripts/producto.js"></script>
-      <script>
-        function moverFila(idFila, dir) {
-          const fila = document.getElementById(idFila);
-          const width = fila.clientWidth;
-          fila.scrollBy({ left: dir * width, behavior: "smooth" });
-        }
-      </script>
+      <script type="module" src="../scripts/producto.js"></script>
+      <script type="module" src="../scripts/main.js"></script>
+      <script src="../scripts/productos-pagina.js"></script>
     </main>
   </body>
 </html>

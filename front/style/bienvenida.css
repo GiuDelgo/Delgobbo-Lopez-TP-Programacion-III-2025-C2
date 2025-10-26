@@ -9,6 +9,7 @@ body {
     grid-template-rows: auto 1fr;
     height: 100vh;
     font-family: Bahnschrift;
+    background-color: #282828
 }
 
 nav {
@@ -43,7 +44,7 @@ main{
     align-items: center;
     text-align: center;
     gap: 20px;
-    background-color: #282828;
+    background-color: #282828
 }
 
 h1{
@@ -53,4 +54,7 @@ h1{
 
 .input-group {
     width: 400px;
+}
+p {
+    color: #ffffff;
 }
