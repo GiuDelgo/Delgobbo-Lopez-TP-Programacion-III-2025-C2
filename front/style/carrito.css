@@ -28,6 +28,14 @@ nav {
   gap: 20px;
 }
 
+#centro {
+  display: flex;
+  width: 220px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-left: 200px;
+}
+
 #derecha {
   display: flex;
   margin-top: 25px;
