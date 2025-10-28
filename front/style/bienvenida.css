@@ -35,6 +35,10 @@ nav {
     margin-top: 25px;
 }
 
+#derecha p{
+    color: #282828;
+}
+
 main{
     grid-row: 2;
     grid-column: 1;
