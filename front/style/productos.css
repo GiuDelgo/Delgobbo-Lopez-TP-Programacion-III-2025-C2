@@ -25,7 +25,15 @@ nav {
 #izquierda {
   display: flex;
   align-items: flex-end;
+  margin-left: 200px;
   gap: 20px;
+}
+
+#nombre-usuario{
+  height: inherit;
+  display: flex;
+  padding-top: 50px;
+  font-size: 1.5rem;
 }
 
 #derecha {

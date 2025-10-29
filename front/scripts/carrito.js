@@ -1,12 +1,12 @@
 function getCarrito() {
     return JSON.parse(localStorage.getItem("carritoDeCompras")) ?? [];
-    }
+}
 
-    function saveCarrito(carrito) {
+function saveCarrito(carrito) {
     localStorage.setItem("carritoDeCompras", JSON.stringify(carrito));
-    }
+}
 
-    function renderCarrito() {
+function renderCarrito() {
     const tbody = document.getElementById("carrito-body");
     const totalGeneralEl = document.getElementById("total-general");
     const carrito = getCarrito();
@@ -23,8 +23,8 @@ function getCarrito() {
     }
 
     let total = 0;
-    tbody.innerHTML = carrito
-        .map((item, index) => {
+
+    tbody.innerHTML = carrito.map((item, index) => {
         const p = item.producto;
         const subtotal = p.precio * item.cantidad;
         total += subtotal;
@@ -48,45 +48,42 @@ function getCarrito() {
                 </button>
             </td>
             </tr>`;
-        })
-        .join("");
+    }).join("");
 
     totalGeneralEl.textContent = total;
 
     document.querySelectorAll(".cantidad-carrito").forEach(input => {
-        input.addEventListener("change", e => {
-        const i = Number(e.target.dataset.index);
-        let nuevaCant = Number(e.target.value);
-        if (isNaN(nuevaCant) || nuevaCant < 1) nuevaCant = 1;
-        const carritoActual = getCarrito();
-        carritoActual[i].cantidad = nuevaCant;
-        saveCarrito(carritoActual);
-        renderCarrito();
-        });
+            input.addEventListener("change", e => {
+            const i = Number(e.target.dataset.index);
+            let nuevaCant = Number(e.target.value);
+            if (isNaN(nuevaCant) || nuevaCant < 1) nuevaCant = 1;
+            const carritoActual = getCarrito();
+            carritoActual[i].cantidad = nuevaCant;
+            saveCarrito(carritoActual);
+            renderCarrito();
+            });
     });
 
     document.querySelectorAll(".btn-eliminar").forEach(btn => {
         btn.addEventListener("click", e => {
-        const i = Number(e.target.dataset.index);
-        const carritoActual = getCarrito();
-        carritoActual.splice(i, 1);
-        saveCarrito(carritoActual);
-        renderCarrito();
+            const i = Number(e.target.dataset.index);
+            const carritoActual = getCarrito();
+            carritoActual.splice(i, 1);
+            saveCarrito(carritoActual);
+            renderCarrito();
+            });
         });
-    });
-    }
+}
 
 function setupConfirmar() {
     const btn = document.getElementById("btn-confirmar");
     if (!btn) return;
-    btn.addEventListener("click", () => {
-        alert("Gracias por su compra (con esto chequeo si funca)");
-        saveCarrito([]);
-        renderCarrito();
+    btn.addEventListener("click", () => {        
+        window.location.href = "./ticket.html";
     });
-    }
+}
 
-    document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
     renderCarrito();
     setupConfirmar();
-    });
+});

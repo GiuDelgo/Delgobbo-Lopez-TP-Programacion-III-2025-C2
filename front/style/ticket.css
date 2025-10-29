@@ -1,0 +1,123 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+    font-family: Bahnschrift;
+    background-color: #282828
+}
+
+nav {
+    grid-row: 1;
+    grid-column: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 60px;
+    padding-right: 60px;
+    height: 100px;
+    background-color: #a0f03c;
+}
+
+#izquierda {
+    display: flex;
+    align-items: self-end;
+    gap: 20px;
+}
+
+#derecha {
+    display: flex;
+    margin-top: 25px;
+}
+
+#derecha p{
+    color: #282828;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1{
+    color: #f0f0f0;
+    margin-bottom: 80px;
+    font-size: 4.5rem;;
+}
+
+#ticket{    
+    width: 700px;
+    min-height: calc(300px - 400px);
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    margin-bottom: 70px;
+}
+
+#info_empresa{
+    display: flex;
+    padding-top: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
+    justify-content:space-between;
+}
+
+#fecha_hora{
+    display: flex;
+    gap: 30px;
+}
+
+#info_usuario{
+    display: flex;
+    padding-top: 20px;
+    padding-left: 50px;
+    background-color: #e7e6e6;
+}
+
+#productos{
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    padding-left: 50px;
+}
+
+li{
+    display: flex;
+    justify-content: space-between;
+    width: 100%; 
+    padding-right: 40px;
+    margin-bottom: 5px;
+}
+
+hr {
+    width: 610px;
+}
+
+#total{
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.3rem;
+    margin-right: 42px;
+    margin-left: 52px;
+}
+
+#div-button-addon2{
+    display: flex;
+    justify-content:center;
+    padding: 80px;
+}
+
+#inicio{
+    justify-content: center;
+    height: 60px;
+    width: 200px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-radius: 5px;
+}
