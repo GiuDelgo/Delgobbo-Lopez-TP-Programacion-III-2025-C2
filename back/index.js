@@ -3,8 +3,8 @@ const express = require("express");
 const app = express();
 const cors = require ("cors");
 
-const usuarioRoutes = require("./routes/usuario.routes");
-const productosRoutes = require("./routes/usuario.routes");
+const usuarioRoutes = require("./routes/admin.routes");
+const productosRoutes = require("./routes/admin.routes");
 
 app.use(express.json());
 app.use(cors());

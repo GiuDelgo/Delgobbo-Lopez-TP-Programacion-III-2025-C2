@@ -1,5 +1,6 @@
 const sequelize = require("../db/sequelize");
 const { DataTypes } = require("sequelize");
+//Producto requiere prodcuto
 
 const Venta = sequelize.define(
     "Venta",
@@ -21,6 +22,6 @@ const Venta = sequelize.define(
     {
         tableName: "venta",
     }
-    );
+);
 
 module.exports = Venta;
