@@ -1,6 +1,6 @@
 import { Producto } from "./producto.js";
 
-const rutaProductos = "/front/scripts/productos.json";
+const rutaProductos = "http://localhost:3000/productos/";
 const maxProductos = 10;
 
 async function traerProductos() {

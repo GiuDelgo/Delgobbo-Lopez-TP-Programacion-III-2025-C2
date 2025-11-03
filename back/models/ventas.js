@@ -17,7 +17,11 @@ const Venta = sequelize.define(
         fecha: {
             type: DataTypes.DATE,
             allowNull: false,
-        }        
+        } ,        
+        precioTotal: {
+            type: DataTypes.FLOAT,
+            allowNull: false,
+        }      
     },
     {
         tableName: "venta",
