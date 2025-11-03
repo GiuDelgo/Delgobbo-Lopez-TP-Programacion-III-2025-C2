@@ -65,16 +65,52 @@ totalP.innerHTML = `<span>$${total}</span>`;
 divTotal.appendChild(totalP2);
 divTotal.appendChild(totalP);
 
+async function registrarVentaSiCorresponde() {
+    try {
+        if (sessionStorage.getItem("ventaEnviada") === "1") return;
+        if (!carritoActual.length) return;
+
+        const body = {
+            nombreCliente: usuario || "Cliente",
+            carritoDeCompras: carritoActual
+        };
+
+        const res = await fetch("http://localhost:3000/ventas", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+
+        if (!res.ok) {
+            const txt = await res.text();
+            console.error("Fallo al registrar venta:", res.status, txt);
+            return;
+        }
+
+        const ventaCreada = await res.json();
+        sessionStorage.setItem("ventaEnviada", "1");
+        // Vaciar carrito una vez registrada la venta
+        localStorage.setItem("carritoDeCompras", JSON.stringify([]));
+
+        // Mostrar nro de venta si querés:
+        const nroVentaEl = document.getElementById("nro_venta");
+        if (nroVentaEl && ventaCreada?.id) {
+            nroVentaEl.textContent = `Venta #${ventaCreada.id}`;
+        }
+    } catch (e) {
+        console.error("Error al registrar la venta:", e);
+    }
+}
+
 function setupFinalizar() {
     const btn = document.getElementById("inicio");
     if (!btn) return;
-    btn.addEventListener("click", () => {         
-        localStorage.setItem("carritoDeCompras", JSON.stringify([]));                 
+    btn.addEventListener("click", () => {
         window.location.href = "./bienvenida.html";
     });
 }
 
-setupFinalizar();
-
-
-
+(async function init() {
+    await registrarVentaSiCorresponde();
+    setupFinalizar();
+})();

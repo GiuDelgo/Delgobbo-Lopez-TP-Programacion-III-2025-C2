@@ -3,7 +3,7 @@ export class Producto{
         this.id= id;
         this.nombre =nombre;
         this.precio =precio;
-        this.img =img; 
+        this.img = img || 'https://via.placeholder.com/300x200?text=Producto';
     }
 
     static actualizarCarrito (producto, cantidad) {
@@ -99,3 +99,4 @@ export class Producto{
         });
     }
 }
+
