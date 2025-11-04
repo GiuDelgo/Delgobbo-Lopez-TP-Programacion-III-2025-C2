@@ -11,6 +11,11 @@ function renderCarrito() {
     const totalGeneralEl = document.getElementById("total-general");
     const carrito = getCarrito();
 
+    const confirmarBtn = document.getElementById("btn-confirmar");
+    if (confirmarBtn) {
+        confirmarBtn.disabled = carrito.length === 0;
+    }
+
     if (!carrito || carrito.length === 0) {
         tbody.innerHTML = `
         <tr>
@@ -78,8 +83,32 @@ function renderCarrito() {
 function setupConfirmar() {
     const btn = document.getElementById("btn-confirmar");
     if (!btn) return;
-    btn.addEventListener("click", () => {        
-        window.location.href = "./ticket.html";
+
+    const modalEl = document.getElementById('confirmModal');
+    const totalEl = document.getElementById('total-general');
+    const totalModalEl = document.getElementById('total-modal');
+    const btnModalConfirmar = document.getElementById('btn-modal-confirmar');
+
+    btn.addEventListener("click", () => {
+        const carrito = getCarrito();
+        if (!carrito.length) return; // opcional: deshabilitar si vacío
+
+        // Actualizar total en el modal
+        if (totalModalEl && totalEl) {
+            totalModalEl.textContent = totalEl.textContent;
+        }
+
+        // Mostrar modal (Bootstrap)
+        if (modalEl && window.bootstrap?.Modal) {
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+
+            // Asegurar un solo handler
+            btnModalConfirmar.onclick = () => {
+                modal.hide();
+                window.location.href = "./ticket.html";
+            };
+        }
     });
 }
 
