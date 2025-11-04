@@ -65,20 +65,25 @@ totalP.innerHTML = `<span>$${total}</span>`;
 divTotal.appendChild(totalP2);
 divTotal.appendChild(totalP);
 
-async function registrarVentaSiCorresponde() {
+async function registrarVenta() {
     try {
-        if (sessionStorage.getItem("ventaEnviada") === "1") return;
-        if (!carritoActual.length) return;
 
-        const body = {
-            nombreCliente: usuario || "Cliente",
-            carritoDeCompras: carritoActual
-        };
+         // Evitar duplicados
+         if (sessionStorage.getItem("ventaEnviada") === "1") {
+            console.log("Venta ya registrada, omitiendo...");
+            return;
+        }
+        
+        const carrito = JSON.parse(localStorage.getItem("carritoDeCompras")) ?? [];
+        const carritoDeCompras = carrito.filter(it => (it?.cantidad ?? 0) > 0);
+        if (!carritoDeCompras.length) return;
+
+        const nombreCliente = localStorage.getItem("nombreUsuarioPapota") || "Cliente";
 
         const res = await fetch("http://localhost:3000/ventas", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body)
+            body: JSON.stringify({ nombreCliente, carritoDeCompras })
         });
 
         if (!res.ok) {
@@ -88,15 +93,13 @@ async function registrarVentaSiCorresponde() {
         }
 
         const ventaCreada = await res.json();
+        
+        // Marcar como enviada para evitar duplicados
         sessionStorage.setItem("ventaEnviada", "1");
-        // Vaciar carrito una vez registrada la venta
-        localStorage.setItem("carritoDeCompras", JSON.stringify([]));
-
-        // Mostrar nro de venta si querés:
-        const nroVentaEl = document.getElementById("nro_venta");
-        if (nroVentaEl && ventaCreada?.id) {
-            nroVentaEl.textContent = `Venta #${ventaCreada.id}`;
+        if (ventaCreada?.id) {
+            sessionStorage.setItem("ventaId", String(ventaCreada.id));
         }
+        
     } catch (e) {
         console.error("Error al registrar la venta:", e);
     }
@@ -106,11 +109,10 @@ function setupFinalizar() {
     const btn = document.getElementById("inicio");
     if (!btn) return;
     btn.addEventListener("click", () => {
+        localStorage.setItem("carritoDeCompras", JSON.stringify([]));
         window.location.href = "./bienvenida.html";
     });
 }
 
-(async function init() {
-    await registrarVentaSiCorresponde();
-    setupFinalizar();
-})();
+registrarVenta();
+setupFinalizar();

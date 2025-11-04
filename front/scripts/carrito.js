@@ -104,9 +104,29 @@ function setupConfirmar() {
             modal.show();
 
             // Asegurar un solo handler
-            btnModalConfirmar.onclick = () => {
-                modal.hide();
-                window.location.href = "./ticket.html";
+            btnModalConfirmar.onclick = async () => {
+                // Evitar doble click
+                btnModalConfirmar.disabled = true;
+
+                try {
+                    const nombreCliente = localStorage.getItem("nombreUsuarioPapota") || "Cliente";
+                    const carritoDeCompras = getCarrito().filter(it => (it?.cantidad ?? 0) > 0);
+
+                    const res = await fetch("http://localhost:3000/ventas", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ nombreCliente, carritoDeCompras })
+                    });
+
+                    btnModalConfirmar.disabled = false;
+                    
+                    modal.hide();
+                    window.location.href = "./ticket.html";
+                } catch (e) {
+                    console.error("Error al registrar la venta:", e);
+                    alert("Error de red al registrar la venta.");
+                    btnModalConfirmar.disabled = false;
+                }
             };
         }
     });

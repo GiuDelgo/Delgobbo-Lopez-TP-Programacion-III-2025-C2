@@ -1,4 +1,4 @@
-const { Venta } = require('../models/ventas'); 
+const Venta  = require('../models/ventas'); 
 const DetalleVenta  = require('../models/detalleVenta'); 
 const Producto  = require('../models/productos'); 
 
@@ -46,7 +46,7 @@ module.exports = {
 
             const detallesFinales = detallesDeVenta.map(detalle => ({
                 ...detalle,
-                VentaId: nuevaVenta.id
+                VentumId: nuevaVenta.id
             }));
 
             await DetalleVenta.bulkCreate(detallesFinales);
