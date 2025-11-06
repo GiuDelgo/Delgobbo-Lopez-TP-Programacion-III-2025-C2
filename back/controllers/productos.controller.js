@@ -59,9 +59,9 @@ module.exports = {
         try {
             const id = Number(req.params.id);
             const prod = await Producto.findByPk(id);
-            if (!prod) {
-                res.status(200).json(prod);
-            }else{
+            if (prod) {
+                return res.status(200).json(prod);
+            } else {
                 return res.status(404).json({ error: 'Producto no encontrado' });
             }            
         } catch (e) { 

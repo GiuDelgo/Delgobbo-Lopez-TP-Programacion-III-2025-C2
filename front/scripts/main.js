@@ -19,13 +19,13 @@ async function traerProductos() {
 
 
     filaA.forEach(p => {
-      const productoINST = new Producto(p.id, p.nombre, p.precio, p.img ?? null);
+      const productoINST = new Producto(p.id, p.nombre, p.precio, p.imagen ?? null);
       const cardElement = productoINST.crearCard();
       contenedorA.appendChild(cardElement);
     });
 
     filaB.forEach(p => {
-      const productoINST = new Producto(p.id, p.nombre, p.precio, p.img ?? null);
+      const productoINST = new Producto(p.id, p.nombre, p.precio, p.imagen ?? null);
       const cardElement = productoINST.crearCard();
       contenedorB.appendChild(cardElement);
     });

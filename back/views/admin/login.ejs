@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Panel de Administración</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            max-width: 450px;
+            width: 100%;
+        }
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .login-body {
+            padding: 40px;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .btn-quick-access {
+            background-color: #28a745;
+            border: none;
+            padding: 10px;
+            font-weight: 500;
+        }
+        .btn-quick-access:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="login-header">
+            <i class="bi bi-shield-lock" style="font-size: 3rem;"></i>
+            <h2 class="mt-3 mb-0">Panel de Administración</h2>
+            <p class="mb-0">Papota Gym</p>
+        </div>
+        <div class="login-body">
+            <% if (error) { %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> <%= error %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <% } %>
+
+            <form action="/admin/login" method="POST" id="loginForm">
+                <div class="mb-3">
+                    <label for="correo" class="form-label">
+                        <i class="bi bi-envelope"></i> Correo Electrónico
+                    </label>
+                    <input type="email" class="form-control" id="correo" name="correo" 
+                           placeholder="admin@papota.com" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="contraseña" class="form-label">
+                        <i class="bi bi-lock"></i> Contraseña
+                    </label>
+                    <input type="password" class="form-control" id="contraseña" name="contraseña" 
+                           placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-login w-100 mb-3">
+                    <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+                </button>
+
+                <button type="button" class="btn btn-success btn-quick-access w-100" 
+                        onclick="accesoRapido()">
+                    <i class="bi bi-lightning-charge"></i> Acceso Rápido (Testing)
+                </button>
+            </form>
+
+            <div class="text-center mt-4">
+                <small class="text-muted">
+                    <i class="bi bi-info-circle"></i> 
+                    El botón de acceso rápido autocompleta las credenciales para facilitar las pruebas
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function accesoRapido() {
+            // Credenciales de prueba (debes crear este usuario en la BD)
+            document.getElementById('correo').value = 'admin@papota.com';
+            document.getElementById('contraseña').value = 'admin123';
+            
+            // Opcional: enviar el formulario automáticamente
+            // document.getElementById('loginForm').submit();
+        }
+    </script>
+</body>
+</html>
+
+
+

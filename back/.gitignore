@@ -1,2 +1,25 @@
-node_modules
+# Dependencias
+node_modules/
+package-lock.json
+
+# Variables de entorno (cada persona debe crear su propio .env)
 .env
+
+# Bases de datos locales
+database.sqlite
+*.sqlite
+*.sqlite3
+*.db
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+*.log
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# Uploads (imágenes subidas por usuarios)
+uploads/*
+!uploads/.gitkeep

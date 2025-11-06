@@ -40,6 +40,17 @@ const Producto = sequelize.define('Producto', {
         allowNull: true // Debe ser NULLABLE
     },
     
+    // --- CAMPOS ADICIONALES PARA EL PANEL ADMIN ---
+    activo: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false
+    },
+    imagen: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    }
+    
 }, {
     tableName: 'producto'
 });
