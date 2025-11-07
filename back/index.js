@@ -48,23 +48,58 @@ app.use("/admin", adminRoutes);
 
 const { Venta, Producto } = require("./models/relaciones");
 const Usuario = require("./models/usuario");
+const bcrypt = require('bcrypt');
+
+// ========================================
+// FUNCIÓN PARA CREAR USUARIO ADMIN AUTOMÁTICAMENTE
+// ========================================
+async function crearUsuarioAdminSiNoExiste() {
+    try {
+        const correoAdmin = 'admin@papota.com';
+        
+        // Verificar si ya existe el usuario admin
+        const adminExistente = await Usuario.findOne({ where: { correo: correoAdmin } });
+        
+        if (!adminExistente) {
+            // Si no existe, crearlo
+            const contraseñaHasheada = await bcrypt.hash('admin123', 10);
+            await Usuario.create({
+                nombre: 'Admin',
+                correo: correoAdmin,
+                contraseña: contraseñaHasheada
+            });
+            console.log('✅ Usuario administrador creado automáticamente');
+            console.log('   📧 Correo: admin@papota.com');
+            console.log('   🔐 Contraseña: admin123');
+        } else {
+            console.log('✅ Usuario administrador ya existe');
+        }
+    } catch (error) {
+        console.error('⚠️  Error al crear usuario admin:', error.message);
+    }
+}
 
 sequelize.authenticate()
     .then(() => {
-        console.log('Conexión a la base de datos establecida correctamente.');
+        console.log('🔗 Conexión a la base de datos establecida correctamente.');
         
         // 🛑 AHORA SÍ, LLAMAR A SYNC AQUÍ 🛑
         // { alter: true } aplica cambios a las tablas existentes sin borrarlas.
         return sequelize.sync({ alter: true }); 
     })
     .then(() => {
-        console.log('Modelos sincronizados con la base de datos.');
+        console.log('📊 Modelos sincronizados con la base de datos.');
         
+        // Crear usuario admin automáticamente
+        return crearUsuarioAdminSiNoExiste();
+    })
+    .then(() => {
         // Iniciar Express solo si la DB está lista
         app.listen(process.env.PORT || 3000, () => {
-            console.log(`Servidor corriendo en el puerto ${process.env.PORT || 3000}`);
+            console.log(`🚀 Servidor corriendo en http://localhost:${process.env.PORT || 3000}`);
+            console.log(`🔐 Panel admin: http://localhost:${process.env.PORT || 3000}/admin/login`);
         });
     })
     .catch(err => {
-        console.error('Error al iniciar o sincronizar la base de datos:', err);
+        console.error('❌ Error al iniciar o sincronizar la base de datos:', err);
     });

@@ -44,7 +44,13 @@ CREATE DATABASE papota_gym CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 #### **2.3. Configurar Variables de Entorno**
 
-Crea un archivo `.env` en la carpeta `back/` con el siguiente contenido:
+Crea un archivo `.env` en la carpeta `back/` basándote en `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
+Edita el archivo `.env` con tus credenciales:
 
 ```env
 STRING_DB=mysql://root:TU_CONTRASEÑA@localhost:3306/papota_gym
@@ -57,32 +63,7 @@ SESSION_SECRET=mi-secreto-super-seguro-2025
 
 **Nota:** Puedes usar el archivo `.env.example` como referencia.
 
-#### **2.4. Crear el Usuario Administrador**
-
-Ejecuta el siguiente SQL en MySQL Workbench para crear el usuario administrador:
-
-```sql
-USE papota_gym;
-
-INSERT INTO usuario (nombre, correo, password, createdAt, updatedAt) 
-VALUES (
-    'Administrador',
-    'admin@papota.com',
-    '$2b$10$YourHashedPasswordHere',
-    NOW(),
-    NOW()
-);
-```
-
-**⚠️ IMPORTANTE:** Debes hashear la contraseña con bcrypt antes de insertarla. 
-
-**Credenciales por defecto:**
-- **Correo:** `admin@papota.com`
-- **Contraseña:** `admin123`
-
-**Nota:** Si ya tienes un usuario administrador, puedes usarlo directamente.
-
-#### **2.5. Iniciar el Servidor Backend**
+#### **2.4. Iniciar el Servidor Backend**
 
 ```bash
 node index.js
@@ -90,11 +71,16 @@ node index.js
 
 Deberías ver:
 ```
-🔗 Conectando a MySQL...
-Conexión a la base de datos establecida correctamente.
-Modelos sincronizados con la base de datos.
-Servidor corriendo en el puerto 3000
+🔗 Conexión a la base de datos establecida correctamente.
+📊 Modelos sincronizados con la base de datos.
+✅ Usuario administrador creado automáticamente
+   📧 Correo: admin@papota.com
+   🔐 Contraseña: admin123
+🚀 Servidor corriendo en http://localhost:3000
+🔐 Panel admin: http://localhost:3000/admin/login
 ```
+
+**Nota:** El usuario administrador se crea automáticamente la primera vez que inicias el servidor.
 
 ### **3. Configurar el Frontend**
 
