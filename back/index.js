@@ -54,7 +54,7 @@ const bcrypt = require('bcrypt');
 
 sequelize.authenticate()
     .then(() => {
-        console.log('Conexión a la base de datos establecida correctamente.');
+        console.log('🔗 Conexión a la base de datos establecida correctamente.');
         
         return sequelize.sync(); 
     })
@@ -86,10 +86,11 @@ sequelize.authenticate()
         }
 
         app.listen(process.env.PORT || 3000, () => {
-            console.log(`Servidor corriendo en el puerto ${process.env.PORT || 3000}`);
+            console.log(`🚀 Servidor corriendo en http://localhost:${process.env.PORT || 3000}`);
+            console.log(`🔐 Panel admin: http://localhost:${process.env.PORT || 3000}/admin/login`);
         });
     })
     .catch(err => {
-        console.error('Error al iniciar o sincronizar la base de datos:', err);
+        console.error('❌ Error al iniciar o sincronizar la base de datos:', err);
     });
 
