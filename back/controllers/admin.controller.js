@@ -126,7 +126,20 @@ module.exports = {
     async guardarProducto(req, res) {
         try {
             const { id } = req.params;
-            const { nombre, marca, precio, tipo_producto, peso, cantidad_gramos_ml, imagen } = req.body;
+            const { nombre, marca, precio, tipo_producto, peso, cantidad_gramos_ml } = req.body;
+            
+            // Si hay archivo nuevo, usar ese. Si no, mantener el existente (solo en edición)
+            let imagenUrl = null;
+            if (req.file) {
+                // Se subió una nueva imagen
+                imagenUrl = `/imagenes/${req.file.filename}`;
+            } else if (id) {
+                // Es edición y no se subió nueva imagen, mantener la existente
+                const productoExistente = await Producto.findByPk(id);
+                if (productoExistente) {
+                    imagenUrl = productoExistente.imagen;
+                }
+            }
 
             const datosProducto = {
                 nombre,
@@ -135,7 +148,7 @@ module.exports = {
                 tipo_producto,
                 peso: tipo_producto === 'Pesa' ? parseFloat(peso) : null,
                 cantidad_gramos_ml: tipo_producto === 'Suplemento' ? parseInt(cantidad_gramos_ml) : null,
-                imagen: imagen || null,
+                imagen: imagenUrl,
                 activo: true
             };
 

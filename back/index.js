@@ -7,10 +7,12 @@ const session = require("express-session");
 const sequelize = require("./db/sequelize");
 
 
+
 const usuarioRoutes = require("./routes/usuario.routes");
 const productosRoutes = require("./routes/productos.routes");
 const ventasRoutes = require("./routes/ventas.routes");
 const adminRoutes = require("./routes/admin.routes");
+
 
 // Configurar EJS como motor de plantillas
 app.set('view engine', 'ejs');
@@ -38,7 +40,7 @@ app.use(session({
 
 // Servir archivos estáticos
 app.use('/public', express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/imagenes', express.static(path.join(__dirname, 'imagenes')));
 
 // Rutas
 app.use("/usuario", usuarioRoutes);
@@ -48,19 +50,41 @@ app.use("/admin", adminRoutes);
 
 const { Venta, Producto } = require("./models/relaciones");
 const Usuario = require("./models/usuario");
+const bcrypt = require('bcrypt');
 
 sequelize.authenticate()
     .then(() => {
         console.log('Conexión a la base de datos establecida correctamente.');
         
-        // 🛑 AHORA SÍ, LLAMAR A SYNC AQUÍ 🛑
-        // { alter: true } aplica cambios a las tablas existentes sin borrarlas.
-        return sequelize.sync({ alter: true }); 
+        return sequelize.sync(); 
     })
-    .then(() => {
+    .then(async () => {
         console.log('Modelos sincronizados con la base de datos.');
         
-        // Iniciar Express solo si la DB está lista
+        // Crear usuario admin si no existe
+        try {
+            const adminCorreo = 'admin@papota.com';
+            const adminPassword = 'admin123';
+            
+            const adminExistente = await Usuario.findOne({ where: { correo: adminCorreo } });
+            
+            if (!adminExistente) {
+                // Hashear la contraseña
+                const hashedPassword = await bcrypt.hash(adminPassword, 10);
+                
+                // Crear el usuario admin
+                await Usuario.create({
+                    nombre: 'Administrador',
+                    correo: adminCorreo,
+                    contraseña: hashedPassword
+                });
+                
+                console.log('Usuario admin creado correctamente.');
+            } 
+        } catch (error) {
+            console.error('Error al crear/verificar usuario admin:', error);
+        }
+
         app.listen(process.env.PORT || 3000, () => {
             console.log(`Servidor corriendo en el puerto ${process.env.PORT || 3000}`);
         });
@@ -68,3 +92,4 @@ sequelize.authenticate()
     .catch(err => {
         console.error('Error al iniciar o sincronizar la base de datos:', err);
     });
+

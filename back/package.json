@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch --env-files.env ./index.js",
+    "dev": "node --watch --require dotenv/config ./index.js",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
