@@ -14,7 +14,7 @@ const ventasRoutes = require("./routes/ventas.routes");
 const adminRoutes = require("./routes/admin.routes");
 
 
-// Configurar EJS como motor de plantillas
+// EJS  motor de plantillas
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -38,7 +38,7 @@ app.use(session({
     }
 }));
 
-// Servir archivos estáticos
+// archivos estáticos
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/imagenes', express.static(path.join(__dirname, 'imagenes')));
 
@@ -61,7 +61,7 @@ sequelize.authenticate()
     .then(async () => {
         console.log('Modelos sincronizados con la base de datos.');
         
-        // Crear usuario admin si no existe
+        // Crea usuario admin si no existe
         try {
             const adminCorreo = 'admin@papota.com';
             const adminPassword = 'admin123';
@@ -69,10 +69,10 @@ sequelize.authenticate()
             const adminExistente = await Usuario.findOne({ where: { correo: adminCorreo } });
             
             if (!adminExistente) {
-                // Hashear la contraseña
+                // Hashea la contraseña
                 const hashedPassword = await bcrypt.hash(adminPassword, 10);
                 
-                // Crear el usuario admin
+                // Crea el usuario admin
                 await Usuario.create({
                     nombre: 'Administrador',
                     correo: adminCorreo,
@@ -86,11 +86,11 @@ sequelize.authenticate()
         }
 
         app.listen(process.env.PORT || 3000, () => {
-            console.log(`🚀 Servidor corriendo en http://localhost:${process.env.PORT || 3000}`);
-            console.log(`🔐 Panel admin: http://localhost:${process.env.PORT || 3000}/admin/login`);
+            console.log(`Servidor corriendo en http://localhost:${process.env.PORT || 3000}`);
+            console.log(`Panel admin: http://localhost:${process.env.PORT || 3000}/admin/login`);
         });
     })
     .catch(err => {
-        console.error('❌ Error al iniciar o sincronizar la base de datos:', err);
+        console.error('Error al iniciar o sincronizar la base de datos:', err);
     });
 

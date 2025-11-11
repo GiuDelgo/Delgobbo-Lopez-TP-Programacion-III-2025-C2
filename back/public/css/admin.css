@@ -1,9 +1,24 @@
 /* Estilos para el Panel de Administración */
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	background-color: #282828;
+	color: #f0f0f0;
+	padding: 20px;
 }
+
+.btn-success{
+	background-color: #a0f03c;
+	color: #3a3a3a;
+}
+
+.btn-success:hover {
+	transform: translateY(-2px);
+	background: #558020;
+	box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Estilos para el Side Bar*/
 
 .sidebar {
     min-height: calc(100vh - 56px);
@@ -11,33 +26,47 @@ body {
 }
 
 .sidebar .list-group-item {
+	background-color: #3a3a3a;
+	color: #a0f03c;
     border-radius: 0;
     border-left: 3px solid transparent;
 }
 
 .sidebar .list-group-item.active {
-    background-color: #0d6efd;
-    border-left-color: #0a58ca;
+	background-color: #747272;
+	border-left-color: #a0f03c;
+	color: #a0f03c;
 }
 
 .sidebar .list-group-item:hover {
-    background-color: #e9ecef;
+	background-color: #3a3a3a;
 }
 
 .card {
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-    border: none;
+	box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.4);
+	border: 1px solid #3a3a3a;
+	background-color: #2a2a2a;
+	color: #f0f0f0;
 }
 
 .card-header {
-    font-weight: 600;
+	font-weight: 600;
+	background-color: #3a3a3a;
+	color: #a0f03c;
 }
 
 .table th {
     font-weight: 600;
     text-transform: uppercase;
     font-size: 0.875rem;
-    color: #495057;
+	color: #a0f03c;
+	background-color: #2a2a2a;
+}
+
+.table td {
+	background-color: #2a2a2a;
+	color: #f0f0f0; 
+	border-color: #f0f0f0;
 }
 
 .btn-group .btn {
@@ -46,6 +75,67 @@ body {
 
 .navbar-brand {
     font-weight: 600;
+}
+
+.navbar.navbar-dark.bg-dark {
+	background-color: #1e1e1e !important;
+	border-bottom: 2px solid #a0f03c;
+}
+
+.login-card {
+	background: #dad3d3;
+	border-radius: 15px;
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+	overflow: hidden;
+	max-width: 450px;
+	width: 100%;
+	margin: 40px auto;
+}
+
+.login-header {
+	background: #a0f03c;
+	color: #282828;
+	padding: 30px;
+	text-align: center;
+}
+
+.login-body {
+	padding: 40px;
+}
+
+.btn-login {
+	background: #a0f03c;
+	color: #282828;
+	border: none;
+	padding: 12px;
+	font-weight: 600;
+}
+
+.btn-login:hover {
+	transform: translateY(-2px);
+	background: #558020;
+	box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-quick-access {
+	background-color: #282828;
+	color:#a0f03c;
+	border: none;
+	padding: 10px;
+	font-weight: 500;
+}
+
+.btn-quick-access:hover {
+	background-color: #494848;
+	box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.badge.bg-success {
+	background-color: #4caf50 !important;
+}
+
+.badge.bg-danger {
+	background-color: #e53935 !important;
 }
 
 /* Responsive */

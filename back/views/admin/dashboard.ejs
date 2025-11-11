@@ -1,44 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - Papota Gym</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/public/css/admin.css">
-</head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/admin/dashboard">
-                <i class="bi bi-shield-lock"></i> Panel de Administración - Papota Gym
-            </a>
-            <div class="d-flex">
-                <span class="navbar-text text-light me-3">
-                    <i class="bi bi-person-circle"></i> <%= usuario.nombre %>
-                </span>
-                <a href="/admin/logout" class="btn btn-outline-light btn-sm">
-                    <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
-                </a>
-            </div>
-        </div>
-    </nav>
+<%- include('../partials/head', { titulo: 'Dashboard' }) %>
+<%- include('../partials/navbar', { usuario }) %>
 
     <div class="container-fluid mt-4">
         <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-2 bg-light sidebar">
-                <div class="list-group list-group-flush">
-                    <a href="/admin/dashboard" class="list-group-item list-group-item-action active">
-                        <i class="bi bi-speedometer2"></i> Dashboard
-                    </a>
-                    <a href="/admin/producto/nuevo" class="list-group-item list-group-item-action">
-                        <i class="bi bi-plus-circle"></i> Nuevo Producto
-                    </a>
-                </div>
-            </div>
+            <%- include('../partials/sidebar', { activo: 'dashboard' }) %>
 
             <!-- Contenido Principal -->
             <div class="col-md-10">
@@ -59,11 +24,11 @@
 
                 <!-- Tabla de Suplementos -->
                 <div class="card mb-4">
-                    <div class="card-header bg-primary text-white">
+                    <div class="card-header bg-secondary text-white">
                         <h4 class="mb-0"><i class="bi bi-capsule"></i> Suplementos</h4>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <div class="table-responsive ">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -239,45 +204,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        let productoIdSeleccionado = null;
-        let nuevoEstado = null;
-
-        function cambiarEstado(productoId, activar) {
-            productoIdSeleccionado = productoId;
-            nuevoEstado = activar;
-            
-            const mensaje = activar 
-                ? '¿Está seguro de que desea activar este producto?' 
-                : '¿Está seguro de que desea desactivar este producto?';
-            
-            document.getElementById('mensajeModal').textContent = mensaje;
-            
-            const modal = new bootstrap.Modal(document.getElementById('modalConfirmacion'));
-            modal.show();
-        }
-
-        document.getElementById('btnConfirmar').addEventListener('click', function() {
-            if (productoIdSeleccionado !== null && nuevoEstado !== null) {
-                // Crear formulario y enviarlo
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = `/admin/producto/${productoIdSeleccionado}/cambiar-estado`;
-                
-                const inputActivo = document.createElement('input');
-                inputActivo.type = 'hidden';
-                inputActivo.name = 'activo';
-                inputActivo.value = nuevoEstado;
-                
-                form.appendChild(inputActivo);
-                document.body.appendChild(form);
-                form.submit();
-            }
-        });
-    </script>
-</body>
-</html>
+<%- include('../partials/scripts') %>
 
 
 
