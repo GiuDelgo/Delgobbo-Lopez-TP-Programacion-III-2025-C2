@@ -1,67 +1,57 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const adminController = require('../controllers/admin.controller');
 
+// Configuración de Multer para subir imágenes
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, "imagenes/");
     },
-    filename: function (req, file, callback) {
-        const mimetype = file.mimetype;
-        const [tipo, extension] = mimetype.split("/"); // ["image", "jpeg"]
+    filename: (req, file, callback) => {
+        const [tipo, extension] = file.mimetype.split("/");
         if (tipo !== "image") {
-        callback(new Error("Documento no permitido"));
+            callback(new Error("Solo imágenes"));
         } else {
-        const nombre = file.originalname + "-" + Date.now() + "." + extension;
-        callback(null, nombre);
-        }
-    },
-});
-
-const upload = multer({storage: storage, 
-
-    fileFilter: (req,file, callback)=>{
-
-        const tiposPermitidos =/jpg|jpeg|png/;
-
-        const tipo = file.mimetype.split("/")[1];
-
-        const esImagen = tiposPermitidos.test(tipo);
-
-        if (esImagen){
-            callback(null, true);
-        }else{
-            callback(new Error ("Documento no permitido"));
+            const nombre = file.originalname + "-" + Date.now() + "." + extension;
+            callback(null, nombre);
         }
     }
 });
 
-const adminController = require('../controllers/admin.controller');
+const upload = multer({
+    storage: storage,
+    fileFilter: (req, file, callback) => {
+        const tiposPermitidos = /jpg|jpeg|png/;
+        const tipo = file.mimetype.split("/")[1];
+        if (tiposPermitidos.test(tipo)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Solo jpg, jpeg o png"));
+        }
+    }
+});
 
-// Middleware para verificar autenticación
-function verificarAutenticacion(req, res, next) {
+// Middleware de autenticación
+function verificarAuth(req, res, next) {
     if (req.session && req.session.usuarioId) {
         return next();
     }
     res.redirect('/admin/login');
 }
 
-// ========================================
-// RUTAS PÚBLICAS (sin autenticación)
-// ========================================
+// Rutas públicas
 router.get('/login', adminController.mostrarLogin);
 router.post('/login', adminController.procesarLogin);
 router.get('/logout', adminController.logout);
 
-// ========================================
-// RUTAS PROTEGIDAS (requieren autenticación)
-// ========================================
-router.get('/dashboard', verificarAutenticacion, adminController.mostrarDashboard);
-router.get('/producto/nuevo', verificarAutenticacion, adminController.mostrarFormulario);
-router.get('/producto/editar/:id', verificarAutenticacion, adminController.mostrarFormulario);
-router.post('/producto/guardar', verificarAutenticacion, upload.single("imgProducto"),adminController.guardarProducto);
-router.post('/producto/guardar/:id', verificarAutenticacion, upload.single("imgProducto"), adminController.guardarProducto);
-router.post('/producto/:id/cambiar-estado', verificarAutenticacion, adminController.cambiarEstado);
+// Rutas protegidas
+router.get('/dashboard', verificarAuth, adminController.mostrarDashboard);
+router.get('/producto/nuevo', verificarAuth, adminController.mostrarFormulario);
+router.get('/producto/editar/:id', verificarAuth, adminController.mostrarFormulario);
+router.post('/producto/guardar', verificarAuth, upload.single("imgProducto"), adminController.guardarProducto);
+router.post('/producto/guardar/:id', verificarAuth, upload.single("imgProducto"), adminController.guardarProducto);
+router.post('/producto/:id/cambiar-estado', verificarAuth, adminController.cambiarEstado);
 
 module.exports = router;
 

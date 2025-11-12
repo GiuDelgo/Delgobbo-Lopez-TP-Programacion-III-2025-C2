@@ -1,134 +1,81 @@
-let productoSeleccionadoID = null;
-let estadoSeleccionado = null;
-
-function openEstadoModal(productoId, activar) {
-	productoSeleccionadoID = productoId;
-	estadoSeleccionado = activar;
-
-	const mensajeModal = activar
-		? '¿Está seguro de que desea activar este producto?'
-		: '¿Está seguro de que desea desactivar este producto?';
-
-	const msgElemento = document.getElementById('mensajeModal');
-	if (msgElemento) msgElemento.textContent = mensajeModal;
-
-	const modalEl = document.getElementById('modalConfirmacion');
-	if (modalEl && window.bootstrap) {
-		const modal = new bootstrap.Modal(modalEl);
-		modal.show();
-	}
-}
-
-function wireModalConfirm() {
-	const btn = document.getElementById('btnConfirmar');
-	if (!btn) return;
-	btn.addEventListener('click', function () {
-		if (productoSeleccionadoID === null || estadoSeleccionado === null) return;
+// Función para cambiar estado con confirmación
+function cambiarEstado(id, activar) {
+	const mensaje = activar ? '¿Activar este producto?' : '¿Desactivar este producto?';
+	
+	if (confirm(mensaje)) {
 		const form = document.createElement('form');
 		form.method = 'POST';
-		form.action = `/admin/producto/${productoSeleccionadoID}/cambiar-estado`;
+		form.action = `/admin/producto/${id}/cambiar-estado`;
+
 		const input = document.createElement('input');
 		input.type = 'hidden';
 		input.name = 'activo';
-		input.value = String(estadoSeleccionado);
+		input.value = activar;
+
 		form.appendChild(input);
 		document.body.appendChild(form);
 		form.submit();
-	});
+	}
 }
 
+// Cambiar campos según tipo de producto
 function cambiarTipoProducto() {
-	const tipoSelect = document.getElementById('tipo_producto');
-	if (!tipoSelect) return;
-	const tipo = tipoSelect.value;
+	const tipo = document.getElementById('tipo_producto').value;
 	const campoPeso = document.getElementById('campo-peso');
 	const campoCantidad = document.getElementById('campo-cantidad');
-	const inputPeso = document.getElementById('peso');
-	const inputCantidad = document.getElementById('cantidad_gramos_ml');
 
 	if (tipo === 'Pesa') {
-		if (campoPeso) campoPeso.style.display = 'block';
-		if (campoCantidad) campoCantidad.style.display = 'none';
-		if (inputPeso) inputPeso.required = true;
-		if (inputCantidad) inputCantidad.required = false;
-		if (inputCantidad) inputCantidad.value = '';
+		campoPeso.style.display = 'block';
+		campoCantidad.style.display = 'none';
+		document.getElementById('peso').required = true;
+		document.getElementById('cantidad_gramos_ml').required = false;
 	} else if (tipo === 'Suplemento') {
-		if (campoPeso) campoPeso.style.display = 'none';
-		if (campoCantidad) campoCantidad.style.display = 'block';
-		if (inputPeso) inputPeso.required = false;
-		if (inputCantidad) inputCantidad.required = true;
-		if (inputPeso) inputPeso.value = '';
-	} else {
-		if (campoPeso) campoPeso.style.display = 'none';
-		if (campoCantidad) campoCantidad.style.display = 'none';
-		if (inputPeso) inputPeso.required = false;
-		if (inputCantidad) inputCantidad.required = false;
+		campoPeso.style.display = 'none';
+		campoCantidad.style.display = 'block';
+		document.getElementById('peso').required = false;
+		document.getElementById('cantidad_gramos_ml').required = true;
 	}
 }
 
-function wireTipoProducto() {
-	const tipoSelect = document.getElementById('tipo_producto');
-	if (!tipoSelect) return;
-	tipoSelect.addEventListener('change', cambiarTipoProducto);
-	cambiarTipoProducto();
-}
-
-
-function wireImagenPreview() {
+// Preview de imagen
+function mostrarPreview() {
 	const input = document.getElementById('imagen');
-	if (!input) return;
-	const preview = document.getElementById('imagen-preview');
-	const container = document.getElementById('preview-container');
-
-	function showPreviewFromFile(file) {
-		if (!file || !preview || !container) return;
-		const url = URL.createObjectURL(file);
-		preview.src = url;
+	const file = input.files[0];
+	
+	if (file) {
+		const preview = document.getElementById('imagen-preview');
+		const container = document.getElementById('preview-container');
+		preview.src = URL.createObjectURL(file);
 		container.style.display = 'block';
-		preview.onload = function () {
-			URL.revokeObjectURL(url);
-		};
-		preview.onerror = function () {
-			container.style.display = 'none';
-		};
-	}
-
-	input.addEventListener('change', function () {
-		const file = input.files && input.files[0];
-		if (file) {
-			showPreviewFromFile(file);
-		} else if (container) {
-			container.style.display = 'none';
-		}
-	});
-
-	// Si hay imagen ya existente (edición), mantener visible si el src ya viene seteado
-	if (preview && preview.getAttribute('src')) {
-		if (container) container.style.display = 'block';
 	}
 }
 
-// Acceso rápido login
-function wireAccesoRapido() {
-	const btn = document.getElementById('btnAccesoRapido');
-	if (!btn) return;
-	btn.addEventListener('click', function () {
-		const correo = document.getElementById('correo');
-		const pass = document.getElementById('contraseña');
-		if (correo) correo.value = 'admin@papota.com';
-		if (pass) pass.value = 'admin123';
-	});
+// Acceso rápido para login
+function accesoRapido() {
+	document.getElementById('correo').value = 'admin@papota.com';
+	document.getElementById('contraseña').value = 'admin123';
 }
 
-
-window.cambiarEstado = openEstadoModal;
-window.cambiarTipoProducto = cambiarTipoProducto;
-
+// Inicializar eventos
 document.addEventListener('DOMContentLoaded', function () {
-	wireModalConfirm();
-	wireTipoProducto();
-	wireImagenPreview();
-	wireAccesoRapido();
+	// Select de tipo de producto
+	const tipoSelect = document.getElementById('tipo_producto');
+	if (tipoSelect) {
+		tipoSelect.addEventListener('change', cambiarTipoProducto);
+		cambiarTipoProducto();
+	}
+
+	// Input de imagen
+	const inputImagen = document.getElementById('imagen');
+	if (inputImagen) {
+		inputImagen.addEventListener('change', mostrarPreview);
+	}
+
+	// Botón acceso rápido
+	const btnAcceso = document.getElementById('btnAccesoRapido');
+	if (btnAcceso) {
+		btnAcceso.addEventListener('click', accesoRapido);
+	}
 });
 
 

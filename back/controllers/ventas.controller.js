@@ -14,7 +14,7 @@ module.exports = {
         const detallesDeVenta = [];
 
         try {
-            for (const item of carritoDeCompras) {
+            carritoDeCompras.forEach(item => {
                 const precioUnitario = item.producto.precio;
                 const cantidadComprada = item.cantidad;
                 const idProducto = item.producto.id;
@@ -32,7 +32,7 @@ module.exports = {
                         subtotal: subtotal
                     });
                 }
-            }
+            });
             
             if (precioTotalCalculado <= 0) {
                 return res.status(400).json({ error: 'El carrito no contiene productos válidos.' });
