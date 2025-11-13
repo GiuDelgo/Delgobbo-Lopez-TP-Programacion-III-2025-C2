@@ -1,8 +1,14 @@
 // Función para cambiar estado con confirmación
 function cambiarEstado(id, activar) {
-	const mensaje = activar ? '¿Activar este producto?' : '¿Desactivar este producto?';
-	
-	if (confirm(mensaje)) {
+	const modalElement = document.getElementById('confirmModal');
+    const btnModalConfirmar = document.getElementById('btn-modal-confirmar');
+
+	const modal = new bootstrap.Modal(modalElement);
+	modal.show();
+
+	btnModalConfirmar.onclick =  () => {
+		btnModalConfirmar.disabled = true;//1 solo click
+
 		const form = document.createElement('form');
 		form.method = 'POST';
 		form.action = `/admin/producto/${id}/cambiar-estado`;
@@ -13,9 +19,11 @@ function cambiarEstado(id, activar) {
 		input.value = activar;
 
 		form.appendChild(input);
+
 		document.body.appendChild(form);
+		modal.hide();
 		form.submit();
-	}
+	};
 }
 
 // Cambia campos según tipo de producto
