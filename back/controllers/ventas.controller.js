@@ -45,11 +45,11 @@ module.exports = {
             });
 
             const detallesFinales = detallesDeVenta.map(detalle => ({
-                ...detalle,
+                ...detalle, //al final de cada venta agrego id de venta al detalle
                 VentumId: nuevaVenta.id
             }));
 
-            await DetalleVenta.bulkCreate(detallesFinales);
+            await DetalleVenta.bulkCreate(detallesFinales); //creo varias a la vez
             
             return res.status(201).json(nuevaVenta);
 
@@ -63,10 +63,10 @@ module.exports = {
         try {
             const ventas = await Venta.findAll({
 
-                include: [{
-                    model: Producto, 
-                    as: 'Productos',
-                    through: {
+                include: [{ //join de tablas
+                    model: Producto, //traigo todos los atributos de producto
+                    as: 'Productos', //alias asociación venta con producto
+                    through: { //tabla intemedia
                         model: DetalleVenta, 
                         attributes: ['cantidadProducto', 'precioUnitario', 'subtotal'] 
                     }

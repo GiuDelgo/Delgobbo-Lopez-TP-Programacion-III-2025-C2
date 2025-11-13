@@ -4,12 +4,10 @@ const Usuario  = require('../models/usuario');
     Recibe
     req.body con:
     Obligatorios: nombreUsuario (string), contraseña (string)
-    (tu modelo la llama literalmente “contraseña”)
-
-    Qué hace y cómo
-    Valida obligatorios; si faltan → 400.
+    
+    Valida los datos obligatorios; si faltan -> 400.
     Crea usuario: Usuario.create({ nombreUsuario, contraseña }).
-    (Más adelante: hasheá contraseña con bcrypt y evitá texto plano)
+    (Más adelante: hashea contraseña con bcrypt y evita texto plano)
 
     Devuelve
     201 Created con { id, nombreUsuario }.

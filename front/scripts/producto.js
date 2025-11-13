@@ -3,7 +3,7 @@ export class Producto{
         this.id= id;
         this.nombre =nombre;
         this.precio =precio;
-        this.img = img || 'https://via.placeholder.com/300x200?text=Producto';
+        this.img = img;
     }
 
     static actualizarCarrito (producto, cantidad) {
@@ -26,53 +26,49 @@ export class Producto{
     };     
 
     crearCard() {
-        // Crear el elemento principal
+        // Elemento principal
         const card = document.createElement('div');
         card.className = 'card';
 
-        // Crear y configurar la imagen
+        // Imagen
         const img = document.createElement('img');
         img.src = this.img;
         img.alt = this.nombre;
 
-        // Crear el cuerpo de la tarjeta
+        // Cuerpo de la tarjeta
         const cardBody = document.createElement('div');
         cardBody.className = 'card-body';
 
-        // Crear título
+        // Título
         const title = document.createElement('h5');
         title.className = 'card-title';
         title.textContent = this.nombre;
 
-        // Crear precio
+        // Precio
         const price = document.createElement('p');
         price.className = 'card-text';
         price.textContent = `$${this.precio}`;
 
-        // Crear input
+        // Input
         const input = document.createElement('input');
         input.type = 'number';
         input.value = '0';
         input.min = '0';
 
-        // Crear botón
+        // Botón
         const button = document.createElement('button');
         button.className = 'btn-actualizar';
         button.textContent = 'Actualizar';
 
-        button.dataset.producto = JSON.stringify(this); // Almacenar el producto como dato JSON en el botón ---
+        button.dataset.producto = JSON.stringify(this); // Almacena el producto como dato JSON en el botón
 
-        // Ensamblar los elementos dentro del card-body
         cardBody.appendChild(title);
         cardBody.appendChild(price);
         cardBody.appendChild(input);
         cardBody.appendChild(button);
-
-        // Ensamblar la imagen y el card-body dentro de la card
         card.appendChild(img);
         card.appendChild(cardBody);
 
-        // Devolver el elemento del DOM completamente construido
         return card;
     }
 
@@ -83,16 +79,16 @@ export class Producto{
             boton.addEventListener ('click', (event) =>{
                 const botonPresionado = event.currentTarget;
                 
-                // 1. Obtener Producto (p)
+                //Obtengo el Producto
                 const productoJSON = botonPresionado.dataset.producto;
                 const producto = JSON.parse(productoJSON);
                 
-                // 2. Obtener Cantidad
+                //Obtengo la  Cantidad
                 const cardElement = botonPresionado.closest('.card');
                 const inputCantidad = cardElement.querySelector('input[type="number"]');
                 const cantidad = parseInt(inputCantidad.value) || 0;
                 
-                // 3. Llamar a la función estática con los datos requeridos
+                //Llamo a la función con los datos requeridos
                 Producto.actualizarCarrito(producto, cantidad);
             })
             

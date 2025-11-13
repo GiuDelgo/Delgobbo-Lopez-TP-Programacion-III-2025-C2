@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const adminController = require('../controllers/admin.controller');
 
-// Configuración de Multer para subir imágenes
+// Configuro Multer para subir imágenes
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, "imagenes/");
@@ -34,7 +34,7 @@ const upload = multer({
 
 // Middleware de autenticación
 function verificarAuth(req, res, next) {
-    if (req.session && req.session.usuarioId) {
+    if (req.session && req.session.usuarioId) { //comprueba que la sesión existe y que usuarioId tiene valor asignado
         return next();
     }
     res.redirect('/admin/login');
@@ -51,7 +51,7 @@ router.get('/producto/nuevo', verificarAuth, adminController.mostrarFormulario);
 router.get('/producto/editar/:id', verificarAuth, adminController.mostrarFormulario);
 router.post('/producto/guardar', verificarAuth, upload.single("imgProducto"), adminController.guardarProducto);
 router.post('/producto/guardar/:id', verificarAuth, upload.single("imgProducto"), adminController.guardarProducto);
-router.post('/producto/:id/cambiar-estado', verificarAuth, adminController.cambiarEstado);
+router.post('/producto/:id/cambiar-estado', verificarAuth, adminController.cambiarEstado);//Falta implementar
 
 module.exports = router;
 

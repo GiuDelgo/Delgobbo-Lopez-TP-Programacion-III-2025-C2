@@ -7,9 +7,9 @@ module.exports = {
     /**
         Recibe
         req.query (opcional):
-        q → texto de busqueda (matchea en nombre o marca)
-        tipo → filtra por tipo_producto (Pesa | Suplemento)
-        marca → filtra por marca
+        q -> texto de busqueda (matchea en nombre o marca)
+        tipo -> filtra por tipo_producto (Pesa | Suplemento)
+        marca -> filtra por marca 
 
         Qué hace y cómo
         Construye un objeto where dinámico con esos filtros.
@@ -26,7 +26,7 @@ module.exports = {
             const where = {};
             if (q) {
                 where[Op.or] = [
-                { nombre: { [Op.like]: `%${q}%` } },
+                { nombre: { [Op.like]: `%${q}%` } },//%VALOR% -> [cualquier caracter]VALOR[cualquier caracter]
                 { marca:  { [Op.like]: `%${q}%` } },
                 ];
             }
@@ -124,7 +124,7 @@ module.exports = {
         req.params.id (numérico).
         req.body con cualquier subset de campoas: nombre, marca, precio, tipo_producto, peso, cantidad_gramos_ml.
 
-        Qués hace y cóomo
+        Qué hace y cóomo
         Busca el producto por PK. Si no existe → 404.
         Arma un objeto changes haciendo merge:
         Mantiene valores actuales si no llegan en el body.

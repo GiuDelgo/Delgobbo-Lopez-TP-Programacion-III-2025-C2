@@ -6,14 +6,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const nombre = input.value.trim();
 
         if (nombre === "") {
-        alert("Ingresa tu nombre BRO");
+            alert("Ingresa tu nombre BRO");
         return;
         }
 
-        
         localStorage.setItem("nombreUsuarioPapota", nombre);
 
-        
         window.location.href = "./productos.html";
     });
 });

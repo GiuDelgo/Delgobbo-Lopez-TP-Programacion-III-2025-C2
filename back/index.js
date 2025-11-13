@@ -6,7 +6,7 @@ const path = require("path");
 const session = require("express-session");
 const sequelize = require("./db/sequelize");
 
-// Setteo el motor de vistas
+// Seteo el motor de vistas
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 // CORS
 app.use(cors({ origin: process.env.ORIGIN }));
 
-// Sesiones
+// Sesiones (middleware auth)
 app.use(session({
     secret: process.env.SESSION_SECRET || 'mi-secreto-super-seguro-2025',
     resave: false,
@@ -44,18 +44,18 @@ app.use("/admin", adminRoutes);
 const Usuario = require("./models/usuario");
 const bcrypt = require('bcrypt');
 
-sequelize.sync()
+sequelize.sync()//si sequelize se conecta a la BD: crea usr admin o lo busca, y levanta el servidor en puerto 3000
     .then(async () => {
         console.log('Base de datos sincronizada.');
         
         // Crear usuario admin si no existe
         const adminExistente = await Usuario.findOne({ where: { correo: 'admin@papota.com' } });
         if (!adminExistente) {
-            const hashedPassword = await bcrypt.hash('admin123', 10);
+            const passHasheada = await bcrypt.hash('admin123', 10);
             await Usuario.create({
                 nombre: 'Administrador',
                 correo: 'admin@papota.com',
-                contraseña: hashedPassword
+                contraseña: passHasheada
             });
             console.log('Usuario admin creado.');
         }

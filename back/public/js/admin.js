@@ -18,7 +18,7 @@ function cambiarEstado(id, activar) {
 	}
 }
 
-// Cambiar campos según tipo de producto
+// Cambia campos según tipo de producto
 function cambiarTipoProducto() {
 	const tipo = document.getElementById('tipo_producto').value;
 	const campoPeso = document.getElementById('campo-peso');
@@ -56,7 +56,7 @@ function accesoRapido() {
 	document.getElementById('contraseña').value = 'admin123';
 }
 
-// Inicializar eventos
+// Inicializo eventos
 document.addEventListener('DOMContentLoaded', function () {
 	// Select de tipo de producto
 	const tipoSelect = document.getElementById('tipo_producto');

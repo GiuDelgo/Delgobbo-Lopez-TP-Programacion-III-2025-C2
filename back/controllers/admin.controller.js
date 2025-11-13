@@ -3,40 +3,40 @@ const Usuario = require('../models/usuario');
 const bcrypt = require('bcrypt');
 
 module.exports = {
-    // Mostrar formulario de login
+    // Muestro formulario de login
     mostrarLogin(req, res) {
         res.render('admin/login', { error: null });
     },
 
-    // Procesar login
+    // Proceso login
     async procesarLogin(req, res) {
         const { correo, contraseña } = req.body;
         
-        // Buscar usuario
+        // Busco usuario
         const usuario = await Usuario.findOne({ where: { correo } });
         if (!usuario) {
             return res.render('admin/login', { error: 'Correo o contraseña incorrectos' });
         }
 
-        // Comparar contraseñas
+        // Comparo contraseñas
         const esValida = await bcrypt.compare(contraseña, usuario.contraseña);
         if (!esValida) {
             return res.render('admin/login', { error: 'Correo o contraseña incorrectos' });
         }
 
-        // Crear sesión
+        // Creo sesión
         req.session.usuarioId = usuario.id;
         req.session.usuarioNombre = usuario.nombre;
         res.redirect('/admin/dashboard');
     },
 
-    // Cerrar sesión
+    // Cierro sesión
     logout(req, res) {
         req.session.destroy();
         res.redirect('/admin/login');
     },
 
-    // Mostrar dashboard
+    // Muestro dashboard
     async mostrarDashboard(req, res) {
         const productos = await Producto.findAll();
         const suplementos = productos.filter(p => p.tipo_producto === 'Suplemento');
@@ -50,7 +50,7 @@ module.exports = {
         });
     },
 
-    // Mostrar formulario (nuevo o editar)
+    // Muestro formulario (nuevo o editar)
     async mostrarFormulario(req, res) {
         const { id } = req.params;
         let producto = null;
@@ -65,11 +65,11 @@ module.exports = {
         res.render('admin/producto-form', {
             usuario: { nombre: req.session.usuarioNombre || 'Admin' },
             producto,
-            esEdicion: !!id
+            esEdicion: !!id//bandera modo edición/creación para EJS (reminder)
         });
     },
 
-    // Guardar producto
+    // Guardo producto
     async guardarProducto(req, res) {
         const { id } = req.params;
         const { nombre, marca, precio, tipo_producto, peso, cantidad_gramos_ml } = req.body;
@@ -104,7 +104,7 @@ module.exports = {
         }
     },
 
-    // Cambiar estado
+    // Cambio estado
     async cambiarEstado(req, res) {
         const { id } = req.params;
         const { activo } = req.body;

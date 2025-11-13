@@ -6,7 +6,7 @@ const maxProductos = 10;
 
 function construirUrlImagen(imagen) {
   if (!imagen) return null;
-  if (imagen.startsWith('http://') || imagen.startsWith('https://')) {
+  if (imagen.startsWith('http://')) {
     return imagen;
   }
   if (imagen.startsWith('/')) {
@@ -18,14 +18,12 @@ function construirUrlImagen(imagen) {
 async function traerProductos() {
   try {
     const res = await fetch(rutaProductos);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const productos = await res.json();
 
     const contenedorA = document.getElementById("filaA");
     const contenedorB = document.getElementById("filaB");
-    if (!contenedorA || !contenedorB) return;
 
-    const norm = s => (s ?? '').toString().trim().toLowerCase();
+    const norm = s => (s ?? '').toString().trim().toLowerCase();//funct anónima para normalizar los tipos de producto
     const filaA = productos.filter(p => norm(p.tipo_producto) === 'suplemento').slice(0, maxProductos);
     const filaB = productos.filter(p => norm(p.tipo_producto) === 'pesa').slice(0, maxProductos);
 

@@ -59,13 +59,13 @@ function renderCarrito() {
 
     document.querySelectorAll(".cantidad-carrito").forEach(input => {
             input.addEventListener("change", e => {
-            const i = Number(e.target.dataset.index);
-            let nuevaCant = Number(e.target.value);
-            if (isNaN(nuevaCant) || nuevaCant < 1) nuevaCant = 1;
-            const carritoActual = getCarrito();
-            carritoActual[i].cantidad = nuevaCant;
-            saveCarrito(carritoActual);
-            renderCarrito();
+                const i = Number(e.target.dataset.index);
+                let nuevaCant = Number(e.target.value);
+                if (isNaN(nuevaCant) || nuevaCant < 1) nuevaCant = 1;
+                const carritoActual = getCarrito();
+                carritoActual[i].cantidad = nuevaCant;
+                saveCarrito(carritoActual);
+                renderCarrito();
             });
     });
 
@@ -93,24 +93,23 @@ function setupConfirmar() {
         const carrito = getCarrito();
         if (!carrito.length) return; // opcional: deshabilitar si vacío
 
-        // Actualizar total en el modal
+        // Actualizo total en el modal
         if (totalModalEl && totalEl) {
             totalModalEl.textContent = totalEl.textContent;
         }
 
-        // Mostrar modal (Bootstrap)
+        // Muestro modal (Bootstrap)
         if (modalEl && window.bootstrap?.Modal) {
             const modal = new bootstrap.Modal(modalEl);
             modal.show();
 
-            // Asegurar un solo handler
+
             btnModalConfirmar.onclick = async () => {
-                // Evitar doble click
-                btnModalConfirmar.disabled = true;
+                btnModalConfirmar.disabled = true;//1 solo click
 
                 try {
                     const nombreCliente = localStorage.getItem("nombreUsuarioPapota") || "Cliente";
-                    const carritoDeCompras = getCarrito().filter(it => (it?.cantidad ?? 0) > 0);
+                    const carritoDeCompras = getCarrito().filter(it => (it?.cantidad ?? 0) > 0);//Saco lo que tiene cantidad 0 del array
 
                     const res = await fetch("http://localhost:3000/ventas", {
                         method: "POST",

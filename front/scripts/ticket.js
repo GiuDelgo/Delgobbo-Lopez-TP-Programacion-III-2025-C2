@@ -3,7 +3,9 @@ let año = fecha.getFullYear();
 let mes = fecha.getMonth() + 1;     
 let dia = fecha.getDate();
 let hora = fecha.getHours();
+hora = hora<10?`0${hora}`:hora;
 let minutos = fecha.getMinutes();
+minutos = minutos<10?`0${minutos}`:minutos;
 
 const info = document.getElementById("fecha_hora");
 const pFecha = document.createElement("p");
@@ -16,7 +18,7 @@ info.appendChild(pFecha);
 info.appendChild(pHora);
 
 function getUsuario() {
-    return localStorage.getItem("nombreUsuarioPapota") ?? " ";
+    return localStorage.getItem("nombreUsuarioPapota");
 }
 
 const usuario = getUsuario();
@@ -65,46 +67,6 @@ totalP.innerHTML = `<span>$${total}</span>`;
 divTotal.appendChild(totalP2);
 divTotal.appendChild(totalP);
 
-async function registrarVenta() {
-    try {
-
-         // Evitar duplicados
-         if (sessionStorage.getItem("ventaEnviada") === "1") {
-            console.log("Venta ya registrada, omitiendo...");
-            return;
-        }
-        
-        const carrito = JSON.parse(localStorage.getItem("carritoDeCompras")) ?? [];
-        const carritoDeCompras = carrito.filter(it => (it?.cantidad ?? 0) > 0);
-        if (!carritoDeCompras.length) return;
-
-        const nombreCliente = localStorage.getItem("nombreUsuarioPapota") || "Cliente";
-
-        const res = await fetch("http://localhost:3000/ventas", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nombreCliente, carritoDeCompras })
-        });
-
-        if (!res.ok) {
-            const txt = await res.text();
-            console.error("Fallo al registrar venta:", res.status, txt);
-            return;
-        }
-
-        const ventaCreada = await res.json();
-        
-        // Marcar como enviada para evitar duplicados
-        sessionStorage.setItem("ventaEnviada", "1");
-        if (ventaCreada?.id) {
-            sessionStorage.setItem("ventaId", String(ventaCreada.id));
-        }
-        
-    } catch (e) {
-        console.error("Error al registrar la venta:", e);
-    }
-}
-
 function setupFinalizar() {
     const btn = document.getElementById("inicio");
     if (!btn) return;
@@ -114,5 +76,7 @@ function setupFinalizar() {
     });
 }
 
-registrarVenta();
-setupFinalizar();
+document.addEventListener("DOMContentLoaded", () => {
+    setupFinalizar();
+});
+

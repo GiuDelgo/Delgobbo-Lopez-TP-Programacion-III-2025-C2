@@ -1,6 +1,5 @@
 const sequelize = require("../db/sequelize");
 const { DataTypes } = require("sequelize");
-//Producto requiere prodcuto
 
 const Venta = sequelize.define(
     "Venta",
