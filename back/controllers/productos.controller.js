@@ -10,6 +10,7 @@ module.exports = {
         q -> texto de busqueda (matchea en nombre o marca)
         tipo -> filtra por tipo_producto (Pesa | Suplemento)
         marca -> filtra por marca 
+        activo true -> trae productos activos
 
         Qué hace y cómo
         Construye un objeto where dinámico con esos filtros.
@@ -32,6 +33,8 @@ module.exports = {
             }
             if (tipo)  where.tipo_producto = tipo;
             if (marca) where.marca = marca;
+
+            where.activo = true;
 
             const productos = await Producto.findAll({ where, order: [['id', 'ASC']] });
             return res.status(200).json(productos);
@@ -167,25 +170,5 @@ module.exports = {
         } catch (e) { 
             return res.status(500).send(e);
         }
-    },
-
-
-    /**Recibe
-        req.params.id (numérico).
-        req.body.estado (boolean), si existiera el campo en el modelo.
-
-        Qué hace y cómo (actual)
-        Responde directo 501 Not Implemented explicando que el modelo no tiene estado.
-
-        Devuelve
-        501 Not Implemented con { error: 'Ruta no implementada: ...' }.
-        Si más adelante agregggamos estado al modelo, esta funcin devberia:
-        Validar que llegue estado en el body.
-        Hacer findByPk(id); si no existe → 404.
-        update({ estado: !!estado }).
-        Devolver 200 OK con { id, estado }. 
-    */
-    async cambiarEstado(req, res) {
-        return res.status(501).json({ error: 'Ruta no implementada: el modelo Producto no tiene "estado"' });
-    },
+    }
 };

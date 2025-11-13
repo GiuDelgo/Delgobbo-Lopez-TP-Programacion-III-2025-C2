@@ -85,30 +85,22 @@ function setupConfirmar() {
     if (!btn) return;
 
     const modalEl = document.getElementById('confirmModal');
-    const totalEl = document.getElementById('total-general');
-    const totalModalEl = document.getElementById('total-modal');
     const btnModalConfirmar = document.getElementById('btn-modal-confirmar');
 
     btn.addEventListener("click", () => {
         const carrito = getCarrito();
         if (!carrito.length) return; // opcional: deshabilitar si vacío
 
-        // Actualizo total en el modal
-        if (totalModalEl && totalEl) {
-            totalModalEl.textContent = totalEl.textContent;
-        }
-
         // Muestro modal (Bootstrap)
         if (modalEl && window.bootstrap?.Modal) {
             const modal = new bootstrap.Modal(modalEl);
             modal.show();
 
-
             btnModalConfirmar.onclick = async () => {
                 btnModalConfirmar.disabled = true;//1 solo click
 
                 try {
-                    const nombreCliente = localStorage.getItem("nombreUsuarioPapota") || "Cliente";
+                    const nombreCliente = localStorage.getItem("nombreUsuarioPapota");
                     const carritoDeCompras = getCarrito().filter(it => (it?.cantidad ?? 0) > 0);//Saco lo que tiene cantidad 0 del array
 
                     const res = await fetch("http://localhost:3000/ventas", {

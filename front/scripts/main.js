@@ -29,18 +29,22 @@ async function traerProductos() {
 
 
     filaA.forEach(p => {
-      const imagenUrl = construirUrlImagen(p.imagen);
-      const productoINST = new Producto(p.id, p.nombre, p.precio, imagenUrl);
-      const cardElement = productoINST.crearCard();
-      contenedorA.appendChild(cardElement);
-    });
+      
+        const imagenUrl = construirUrlImagen(p.imagen);
+        const productoINST = new Producto(p.id, p.nombre, p.precio, p.activo, imagenUrl);
+        const cardElement = productoINST.crearCard();
+        contenedorA.appendChild(cardElement);
+      }      
+    );
 
     filaB.forEach(p => {
-      const imagenUrl = construirUrlImagen(p.imagen);
-      const productoINST = new Producto(p.id, p.nombre, p.precio, imagenUrl);
-      const cardElement = productoINST.crearCard();
-      contenedorB.appendChild(cardElement);
-    });
+
+        const imagenUrl = construirUrlImagen(p.imagen);
+        const productoINST = new Producto(p.id, p.nombre, p.precio, p.activo, imagenUrl);
+        const cardElement = productoINST.crearCard();
+        contenedorB.appendChild(cardElement);
+      }
+    );
 
     Producto.inicializarEventos();
   } catch (error) {

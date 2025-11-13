@@ -1,8 +1,9 @@
 export class Producto{
-    constructor (id=null, nombre = null, precio = null, img = null){
+    constructor (id=null, nombre = null, precio = null, activo = null, img = null){
         this.id= id;
         this.nombre =nombre;
         this.precio =precio;
+        this.activo = activo;
         this.img = img;
     }
 
@@ -24,7 +25,7 @@ export class Producto{
 
         localStorage.setItem("carritoDeCompras", JSON.stringify(carritoDeCompras));
     };     
-
+    
     crearCard() {
         // Elemento principal
         const card = document.createElement('div');
