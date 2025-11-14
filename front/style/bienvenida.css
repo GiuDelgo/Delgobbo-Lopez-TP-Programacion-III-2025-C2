@@ -62,3 +62,22 @@ h1{
 p {
     color: #ffffff;
 }
+
+#div-button-addon2{
+    display: flex;
+    justify-content:center;
+    padding-bottom: 100px;
+}
+
+#button-addon2{
+    justify-content: center;
+    height: 80px;
+    width: 500px;
+    font-size: 2rem;
+    font-weight: 700;
+    border-radius: 5px;
+}
+
+#adminLink{
+    color: #7e7a7a;
+}

@@ -1,3 +1,6 @@
+const baseUrlTicket = "http://localhost:3000/ventas/descargar_ticket";
+
+
 const fecha = new Date();
 let año = fecha.getFullYear();
 let mes = fecha.getMonth() + 1;     
@@ -69,7 +72,6 @@ divTotal.appendChild(totalP);
 
 function setupFinalizar() {
     const btn = document.getElementById("inicio");
-    if (!btn) return;
     btn.addEventListener("click", () => {
         localStorage.setItem("carritoDeCompras", JSON.stringify([]));
         window.location.href = "./bienvenida.html";

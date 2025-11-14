@@ -2,6 +2,9 @@ const Venta  = require('../models/ventas');
 const DetalleVenta  = require('../models/detalleVenta'); 
 const Producto  = require('../models/productos'); 
 
+const PDFDocument = require ("pdfkit");
+const path = require("path");  
+
 module.exports = {
     async registrarVenta(req, res) {
         const { nombreCliente, carritoDeCompras } = req.body;
@@ -80,7 +83,22 @@ module.exports = {
             console.error("Error al listar las ventas con detalle:", e);
             return res.status(500).json({ error: 'Error interno del servidor al obtener el detalle de ventas.' });
         }
+    },
+
+    descargarTicket(req, res) {        
+        const filePDF = new PDFDocument;
+
+        try {
+            res.setHeader('Content-Type', 'application/pdf'); 
+            res.setHeader("Content-Disposition", "attachment;filename=ticket.pdf");
+
+            filePDF.pipe(res);
+            filePDF.text("probando descarga");
+            
+            filePDF.end();
+        } catch (e) {
+            console.error("Error al generar o enviar el ticket:", e);
+            res.status(500).send("Error interno al procesar el ticket.");
+        }
     }
-
-
 }
