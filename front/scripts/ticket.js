@@ -1,6 +1,5 @@
 const baseUrlTicket = "http://localhost:3000/ventas/descargar_ticket";
 
-
 const fecha = new Date();
 let año = fecha.getFullYear();
 let mes = fecha.getMonth() + 1;     
@@ -44,6 +43,8 @@ const productosLista = document.getElementById("productos");
 
 let total = 0;
 
+const datosParaPDF = [];
+
 carritoActual.forEach(elemento => {
     const itemCarrito = elemento;
     const producto = itemCarrito.producto;
@@ -58,6 +59,13 @@ carritoActual.forEach(elemento => {
     <span>$${(cantidadComprada * producto.precio)}</span>`;
     productosLista.appendChild(itemLista);
     productosLista.appendChild(divisor);
+
+    datosParaPDF.push({
+        nombre: producto.nombre,
+        cantidad: cantidadComprada,
+        precioUnitario: producto.precio,
+        subtotal: cantidadComprada * producto.precio
+    });
 });
 
 const totalP = document.createElement("p");
@@ -70,6 +78,37 @@ totalP.innerHTML = `<span>$${total}</span>`;
 divTotal.appendChild(totalP2);
 divTotal.appendChild(totalP);
 
+const btnImprimir = document.getElementById('descargar');
+
+async function guardarTicket(){
+    const response = await fetch(baseUrlTicket, {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json'
+        },        
+        body: JSON.stringify({
+            cliente: usuario, 
+            items: datosParaPDF,
+            total: total
+        })
+    });
+
+    const blob = await response.blob(); //parseo respuesta a archivo
+
+    const url = window.URL.createObjectURL(blob); //creo URL local temporal en la pestaña actual
+
+    const a = document.createElement('a');
+    a.style.display = 'none'; // oculto el enlace
+    a.href = url;
+    a.download = 'ticket.pdf';
+
+    document.body.appendChild(a);
+    a.click();
+    
+    window.URL.revokeObjectURL(url);
+    a.remove();
+}
+
 function setupFinalizar() {
     const btn = document.getElementById("inicio");
     btn.addEventListener("click", () => {
@@ -77,6 +116,10 @@ function setupFinalizar() {
         window.location.href = "./bienvenida.html";
     });
 }
+
+btnImprimir.addEventListener('click', (event) =>{
+    guardarTicket();
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     setupFinalizar();

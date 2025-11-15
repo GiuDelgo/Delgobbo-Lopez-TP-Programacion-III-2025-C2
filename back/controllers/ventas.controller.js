@@ -85,16 +85,27 @@ module.exports = {
         }
     },
 
-    descargarTicket(req, res) {        
+    descargarTicket(req, res) {       
+        const { cliente, items, total } = req.body; 
         const filePDF = new PDFDocument;
 
         try {
             res.setHeader('Content-Type', 'application/pdf'); 
             res.setHeader("Content-Disposition", "attachment;filename=ticket.pdf");
-
             filePDF.pipe(res);
-            filePDF.text("probando descarga");
-            
+
+            filePDF.fontSize(20).text('TICKET DE VENTA', { align: 'center' });
+            filePDF.fontSize(12).moveDown().text(`Cliente: ${cliente}`);
+            filePDF.text(`Total Final: $${total.toFixed(2)}`);
+            filePDF.moveDown();
+
+            filePDF.fontSize(10).text('----------------------------------------------------');
+            items.forEach(item => {
+                const itemLine = `${item.nombre} | ${item.cantidad} x $${item.precioUnitario.toFixed(2)} | Subtotal: $${item.subtotal.toFixed(2)}`;
+                filePDF.text(itemLine);
+            });
+            filePDF.text('----------------------------------------------------');
+
             filePDF.end();
         } catch (e) {
             console.error("Error al generar o enviar el ticket:", e);

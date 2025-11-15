@@ -3,8 +3,8 @@ const ctrl = require('../controllers/ventas.controller');
 
 
 router.post('/', ctrl.registrarVenta); 
+router.post('/descargar_ticket', ctrl.descargarTicket); 
 router.get('/', ctrl.listarVentasDetalle); 
-router.get('/descargar_ticket', ctrl.descargarTicket); 
 
 //router.get('/:id', VentaController.obtenerPorId);
 

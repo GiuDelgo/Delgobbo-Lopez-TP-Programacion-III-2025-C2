@@ -113,7 +113,7 @@ hr {
     gap: 50px;
 }
 
-#inicio{
+#inicio, #descargar{
     justify-content: center;
     height: 60px;
     width: 200px;
@@ -122,13 +122,6 @@ hr {
     border-radius: 5px;
 }
 
-#imprimir{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 60px;
-    width: 200px;
-    font-size: 1.5rem;
-    font-weight: 700;
-    border-radius: 5px;
+#descargar{    
+    width: 250px;
 }
