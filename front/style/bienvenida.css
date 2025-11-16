@@ -9,7 +9,8 @@ body {
     grid-template-rows: auto 1fr;
     height: 100vh;
     font-family: Bahnschrift;
-    background-color: #282828
+    background-color: #282828;
+    overflow: hidden;
 }
 
 nav {
@@ -20,7 +21,7 @@ nav {
     align-items: center;
     padding-left: 60px;
     padding-right: 60px;
-    height: 100px;
+    height: 120px;
     background-color: #a0f03c;
 }
 
@@ -30,6 +31,10 @@ nav {
     gap: 20px;
 }
 
+#izquierda img {
+    height: 80px;
+}
+
 #derecha {
     display: flex;
     margin-top: 25px;
@@ -37,6 +42,8 @@ nav {
 
 #derecha p{
     color: #282828;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 main{
@@ -47,37 +54,65 @@ main{
     justify-content: center;
     align-items: center;
     text-align: center;
-    gap: 20px;
-    background-color: #282828
+    gap: 40px;
+    background-color: #282828;
+    padding: 20px;
 }
 
 h1{
-    font-size: 5rem;
+    font-size: 6rem;
     color: #f0f0f0;
+    margin-bottom: 0;
+}
+
+p {
+    color: #ffffff;
+    font-size: 2rem;
+    margin-bottom: 0;
 }
 
 .input-group {
-    width: 400px;
+    width: 600px;
+    height: 80px;
 }
-p {
-    color: #ffffff;
+
+#input-nombre {
+    font-size: 1.8rem;
+    padding: 20px;
+}
+
+#btn-ingresar {
+    font-size: 1.8rem;
+    padding: 20px 40px;
+    width: 180px;
 }
 
 #div-button-addon2{
     display: flex;
-    justify-content:center;
-    padding-bottom: 100px;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 #button-addon2{
     justify-content: center;
-    height: 80px;
-    width: 500px;
-    font-size: 2rem;
+    height: 70px;
+    width: 550px;
+    font-size: 1.6rem;
     font-weight: 700;
     border-radius: 5px;
+    border: 2px solid #7e7a7a;
+}
+
+#button-addon2:hover{
+    background-color: #3a3a3a;
+    border-color: #a0f03c;
 }
 
 #adminLink{
     color: #7e7a7a;
+    text-decoration: none;
+}
+
+#adminLink:hover{
+    color: #a0f03c;
 }

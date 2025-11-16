@@ -89,30 +89,45 @@ function setupConfirmar() {
 
     btn.addEventListener("click", () => {
         const carrito = getCarrito();
-        if (!carrito.length) return; // opcional: deshabilitar si vacío
+        if (!carrito.length) return; 
 
-        // Muestro modal (Bootstrap)
+        
         if (modalEl && window.bootstrap?.Modal) {
             const modal = new bootstrap.Modal(modalEl);
             modal.show();
 
             btnModalConfirmar.onclick = async () => {
-                btnModalConfirmar.disabled = true;//1 solo click
+                btnModalConfirmar.disabled = true;
 
                 try {
                     const nombreCliente = localStorage.getItem("nombreUsuarioPapota");
-                    const carritoDeCompras = getCarrito().filter(it => (it?.cantidad ?? 0) > 0);//Saco lo que tiene cantidad 0 del array
+                    const carritoActual = getCarrito();
+                    const carritoDeCompras = [];
+                    
+                    for (let i = 0; i < carritoActual.length; i++) {
+                        const item = carritoActual[i];
+                        const cantidad = item.cantidad || 0;
+                        if (cantidad > 0) {
+                            carritoDeCompras.push(item);
+                        }
+                    }
 
                     const res = await fetch("http://localhost:3000/ventas", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ nombreCliente, carritoDeCompras })
+                        body: JSON.stringify({ nombreCliente: nombreCliente, carritoDeCompras: carritoDeCompras })
                     });
 
                     btnModalConfirmar.disabled = false;
                     
-                    modal.hide();
-                    window.location.href = "./ticket.html";
+                    if (res.status === 201) {
+                        modal.hide();
+                        window.location.href = "./ticket.html";
+                    } else {
+                        const errorData = await res.json();
+                        console.error("Error del servidor:", errorData);
+                        alert(errorData.error || "Error al procesar la compra.");
+                    }
                 } catch (e) {
                     console.error("Error al registrar la venta:", e);
                     alert("Error de red al registrar la venta.");
