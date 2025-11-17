@@ -2,7 +2,6 @@ import { Producto } from "./producto.js";
 
 const rutaProductos = "http://localhost:3000/productos";
 const baseUrlBackend = "http://localhost:3000";
-const maxProductos = 10;
 
 function construirUrlImagen(imagen) {
   if (!imagen) return null;
@@ -24,8 +23,8 @@ async function traerProductos() {
     const contenedorB = document.getElementById("filaB");
 
     const norm = s => (s ?? '').toString().trim().toLowerCase();//funct anónima para normalizar los tipos de producto
-    const filaA = productos.filter(p => norm(p.tipo_producto) === 'suplemento').slice(0, maxProductos);
-    const filaB = productos.filter(p => norm(p.tipo_producto) === 'pesa').slice(0, maxProductos);
+    const filaA = productos.filter(p => norm(p.tipo_producto) === 'suplemento');
+    const filaB = productos.filter(p => norm(p.tipo_producto) === 'pesa');
 
 
     filaA.forEach(p => {

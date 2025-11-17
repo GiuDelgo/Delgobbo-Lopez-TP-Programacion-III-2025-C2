@@ -36,19 +36,68 @@ module.exports = {
         res.redirect('/admin/login');
     },
 
-    // Muestro dashboard
+    // Muestro dashboard paginado
     async mostrarDashboard(req, res) {
-        const productos = await Producto.findAll();
-        const suplementos = productos.filter(p => p.tipo_producto === 'Suplemento');
-        const pesas = productos.filter(p => p.tipo_producto === 'Pesa');
+        const tamañoPag = 10;
+        const paginaActual = Number(req.query.pagina) || 1;
+        const offset = (paginaActual - 1) * tamañoPag;
 
-        res.render('admin/dashboard', {
-            usuario: { nombre: req.session.usuarioNombre || 'Admin' },
-            suplementos,
-            pesas,
-            mensaje: req.query.mensaje || null
-        });
+        try {
+            const resultadoSuplementos = await Producto.findAndCountAll({
+                where: { tipo_producto: 'Suplemento' }, // Filtro de tipo directo en la DB
+                limit: tamañoPag,
+                offset: offset,
+                order: [['id', 'ASC']]
+            });
+
+            const resultadoPesas = await Producto.findAndCountAll({
+                where: { tipo_producto: 'Pesa' }, // Filtro de tipo directo en la DB
+                limit: tamañoPag,
+                offset: offset,
+                order: [['id', 'ASC']]
+            });
+            
+            //Calculo el total de páginas para cada tipo (para la navegación)
+            const totalPagSuplementos = Math.ceil(resultadoSuplementos.count / tamañoPag);
+            const totalPagPesas = Math.ceil(resultadoPesas.count / tamañoPag);
+
+
+            res.render('admin/dashboard', {
+                usuario: { nombre: req.session.usuarioNombre || 'Admin' },
+                
+                // Los arrays de productos están en la propiedad 'rows'
+                suplementos: resultadoSuplementos.rows, 
+                pesas: resultadoPesas.rows,
+                
+                // Variables de Paginación para el Frontend
+                paginacion: {
+                    actual: paginaActual,
+                    totalSuplementos: totalPagSuplementos,
+                    totalPesas: totalPagPesas,
+                },
+                
+                mensaje: req.query.mensaje || null
+            });
+
+        } catch (e) {
+            console.error("Error al obtener el dashboard:", e);
+            res.status(500).send("Error interno del servidor.");
+        }
     },
+
+    // // Muestro dashboard
+    // async mostrarDashboard(req, res) {
+    //     const productos = await Producto.findAll();
+    //     const suplementos = productos.filter(p => p.tipo_producto === 'Suplemento');
+    //     const pesas = productos.filter(p => p.tipo_producto === 'Pesa');
+
+    //     res.render('admin/dashboard', {
+    //         usuario: { nombre: req.session.usuarioNombre || 'Admin' },
+    //         suplementos,
+    //         pesas,
+    //         mensaje: req.query.mensaje || null
+    //     });
+    // },
 
     // Muestro formulario (nuevo o editar)
     async mostrarFormulario(req, res) {

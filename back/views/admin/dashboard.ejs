@@ -154,6 +154,40 @@
                     </table>
                 </div>
             </div>
+
+            <% if (paginacion && (paginacion.totalSuplementos > 1 || paginacion.totalPesas > 1)) { %>
+            <nav aria-label="Paginación de productos">
+                <ul class="pagination justify-content-center">
+                    <!-- Botón Anterior -->
+                    <li class="page-item <%= paginacion.actual === 1 ? 'disabled' : '' %>">
+                        <% if (paginacion.actual > 1) { %>
+                            <a class="page-link" href="/admin/dashboard?pagina=<%= paginacion.actual - 1 %>">Anterior</a>
+                        <% } else { %>
+                            <span class="page-link">Anterior</span>
+                        <% } %>
+                    </li>
+                    
+                    <!-- Números de página -->
+                    <% 
+                    const totalPag = Math.max(paginacion.totalSuplementos || 0, paginacion.totalPesas || 0);
+                    for (let i = 1; i <= totalPag; i++) { 
+                    %>
+                        <li class="page-item <%= i === paginacion.actual ? 'active' : '' %>">
+                            <a class="page-link" href="/admin/dashboard?pagina=<%= i %>"><%= i %></a>
+                        </li>
+                    <% } %>
+                    
+                    <!-- Botón Siguiente -->
+                    <li class="page-item <%= paginacion.actual >= totalPag ? 'disabled' : '' %>">
+                        <% if (paginacion.actual < totalPag) { %>
+                            <a class="page-link" href="/admin/dashboard?pagina=<%= paginacion.actual + 1 %>">Siguiente</a>
+                        <% } else { %>
+                            <span class="page-link">Siguiente</span>
+                        <% } %>
+                    </li>
+                </ul>
+            </nav>
+            <% } %>
         </div>
         </div>
     </div>
