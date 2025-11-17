@@ -4,6 +4,7 @@ const Producto  = require('../models/productos');
 
 const PDFDocument = require ("pdfkit");
 const path = require("path");  
+const { param } = require('../routes/ventas.routes');
 
 module.exports = {
     async registrarVenta(req, res) {
@@ -82,6 +83,28 @@ module.exports = {
         } catch (e) {
             console.error("Error al listar las ventas con detalle:", e);
             return res.status(500).json({ error: 'Error interno del servidor al obtener el detalle de ventas.' });
+        }
+    },
+
+    async obtenerPorId(req, res) {
+        try {
+            const id = req.params.id;
+
+            const venta = await Venta.findByPk(id,{
+                include: [{ //join de tablas
+                    model: Producto, //traigo todos los atributos de producto
+                    as: 'Productos', //alias asociación venta con producto
+                    through: { //tabla intemedia
+                        model: DetalleVenta, 
+                        attributes: ['cantidadProducto', 'precioUnitario', 'subtotal'] 
+                    }
+                }]
+        });
+            return res.status(200).json(venta); 
+
+        } catch (e) {
+            console.error("Error. Venta no encontrada:", e);
+            return res.status(500).json({ error: 'Error interno del servidor al obtener la venta.' });
         }
     },
 

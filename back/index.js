@@ -44,7 +44,10 @@ app.use("/admin", adminRoutes);
 const Usuario = require("./models/usuario");
 const bcrypt = require('bcrypt');
 
-sequelize.sync()//si sequelize se conecta a la BD: crea usr admin o lo busca, y levanta el servidor en puerto 3000
+//Carga de relaciones antes de iniciar la BD
+require("./models/relaciones"); 
+
+sequelize.sync({force: false})//si sequelize se conecta a la BD: crea usr admin o lo busca, y levanta el servidor en puerto 3000
     .then(async () => {
         console.log('Base de datos sincronizada.');
         
