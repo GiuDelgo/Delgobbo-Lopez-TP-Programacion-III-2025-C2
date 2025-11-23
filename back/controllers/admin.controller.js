@@ -63,7 +63,7 @@ module.exports = {
 
 
             res.render('admin/dashboard', {
-                usuario: { nombre: req.session.usuarioNombre || 'Admin' },
+                usuario: { nombre: req.session.usuarioNombre },
                 
                 // Los arrays de productos están en la propiedad 'rows'
                 suplementos: resultadoSuplementos.rows, 

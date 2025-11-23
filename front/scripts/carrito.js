@@ -141,4 +141,25 @@ function setupConfirmar() {
 document.addEventListener("DOMContentLoaded", () => {
     renderCarrito();
     setupConfirmar();
+    
+    let toggle = document.getElementById('container');
+    let body = document.querySelector('body');
+
+    let temaGuardado = JSON.parse(localStorage.getItem('tema'))?.estado || ' ';
+
+    if (temaGuardado === 'active'){
+        toggle.classList.add('active');
+        body.classList.add('active');
+    }
+
+    toggle.onclick = () => {        
+        toggle.classList.toggle('active');
+        body.classList.toggle('active');
+
+        if (toggle.classList.contains('active')){
+            localStorage.setItem('tema',JSON.stringify({'estado':'active'}));
+        }else{
+            localStorage.setItem('tema',JSON.stringify({'estado':' '}));
+        }
+    }
 });
