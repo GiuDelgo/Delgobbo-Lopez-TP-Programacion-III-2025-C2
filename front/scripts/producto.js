@@ -7,14 +7,57 @@ export class Producto{
         this.img = img;
     }
 
+    static mostrarModalProductoAgregado(producto, cantidad, esActualizacion = false) {
+        const modalEl = document.getElementById('productoAgregadoModal');
+        if (!modalEl || !window.bootstrap?.Modal) {
+            
+            alert(`${esActualizacion ? 'Actualizado' : 'Agregado'}: ${producto.nombre} x${cantidad}`);
+            return;
+        }
+
+        const modalBody = document.getElementById('productoAgregadoModalBody');
+        const modalTitle = document.getElementById('productoAgregadoModalLabel');
+        const btnIrCarrito = document.getElementById('btn-ir-carrito');
+
+        
+        modalTitle.textContent = esActualizacion ? '✓ Producto actualizado' : '✓ Producto agregado';
+
+        
+        const mensaje = esActualizacion 
+            ? `Se actualizó la cantidad de <strong>${producto.nombre}</strong> a <strong>${cantidad}</strong> unidad${cantidad !== 1 ? 'es' : ''} en tu carrito.`
+            : `Se agregó <strong>${producto.nombre}</strong> x<strong>${cantidad}</strong> al carrito.`;
+        
+        modalBody.innerHTML = mensaje;
+
+        
+        btnIrCarrito.onclick = () => {
+            window.location.href = './carrito.html';
+        };
+
+       
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+    }
+
     static actualizarCarrito (producto, cantidad) {
         let carritoDeCompras = JSON.parse(localStorage.getItem("carritoDeCompras")) ?? [];
         
         const nuevaCantidad = cantidad;
 
-        const itemEncontradoIndex = carritoDeCompras.findIndex(item => item.producto.id === producto.id);
         
-        if (itemEncontradoIndex !== -1) {
+        if (nuevaCantidad === 0) {
+            const itemEncontradoIndex = carritoDeCompras.findIndex(item => item.producto.id === producto.id);
+            if (itemEncontradoIndex !== -1) {
+                carritoDeCompras.splice(itemEncontradoIndex, 1);
+            }
+            localStorage.setItem("carritoDeCompras", JSON.stringify(carritoDeCompras));
+            return;
+        }
+
+        const itemEncontradoIndex = carritoDeCompras.findIndex(item => item.producto.id === producto.id);
+        const esActualizacion = itemEncontradoIndex !== -1;
+        
+        if (esActualizacion) {
             carritoDeCompras[itemEncontradoIndex].cantidad = nuevaCantidad;
         } else {
             carritoDeCompras.push({
@@ -24,39 +67,44 @@ export class Producto{
         }
 
         localStorage.setItem("carritoDeCompras", JSON.stringify(carritoDeCompras));
+        
+       
+        if (nuevaCantidad > 0) {
+            Producto.mostrarModalProductoAgregado(producto, nuevaCantidad, esActualizacion);
+        }
     };     
     
     crearCard() {
-        // Elemento principal
+        
         const card = document.createElement('div');
         card.className = 'card';
 
-        // Imagen
+        
         const img = document.createElement('img');
         img.src = this.img;
         img.alt = this.nombre;
 
-        // Cuerpo de la tarjeta
+        
         const cardBody = document.createElement('div');
         cardBody.className = 'card-body';
 
-        // Título
+        
         const title = document.createElement('h5');
         title.className = 'card-title';
         title.textContent = this.nombre;
 
-        // Precio
+        
         const price = document.createElement('p');
         price.className = 'card-text';
         price.textContent = `$${this.precio}`;
 
-        // Input
+        
         const input = document.createElement('input');
         input.type = 'number';
         input.value = '0';
         input.min = '0';
 
-        // Botón
+        
         const button = document.createElement('button');
         button.className = 'btn-actualizar';
         button.textContent = 'Actualizar';
@@ -80,16 +128,16 @@ export class Producto{
             boton.addEventListener ('click', (event) =>{
                 const botonPresionado = event.currentTarget;
                 
-                //Obtengo el Producto
+                
                 const productoJSON = botonPresionado.dataset.producto;
                 const producto = JSON.parse(productoJSON);
                 
-                //Obtengo la  Cantidad
+                
                 const cardElement = botonPresionado.closest('.card');
                 const inputCantidad = cardElement.querySelector('input[type="number"]');
                 const cantidad = parseInt(inputCantidad.value) || 0;
                 
-                //Llamo a la función con los datos requeridos
+                
                 Producto.actualizarCarrito(producto, cantidad);
             })
             

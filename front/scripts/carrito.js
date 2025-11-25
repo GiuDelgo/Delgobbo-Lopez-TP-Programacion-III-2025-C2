@@ -1,3 +1,33 @@
+// Función para mostrar mensajes en modal
+function mostrarMensajeModal(titulo, mensaje, tipo = 'info') {
+    const modalEl = document.getElementById('mensajeModal');
+    if (!modalEl || !window.bootstrap?.Modal) {
+        // Fallback a alert si Bootstrap no está disponible
+        alert(mensaje);
+        return;
+    }
+
+    const modalTitle = document.getElementById('mensajeModalLabel');
+    const modalBody = document.getElementById('mensajeModalBody');
+    
+    modalTitle.textContent = titulo;
+    modalBody.textContent = mensaje;
+    
+    // Cambiar color del header según el tipo
+    const modalHeader = modalEl.querySelector('.modal-header');
+    modalHeader.className = 'modal-header';
+    if (tipo === 'error') {
+        modalHeader.classList.add('bg-danger', 'text-white');
+    } else if (tipo === 'success') {
+        modalHeader.classList.add('bg-success', 'text-white');
+    } else {
+        modalHeader.classList.add('bg-dark', 'text-light');
+    }
+    
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+}
+
 function getCarrito() {
     return JSON.parse(localStorage.getItem("carritoDeCompras")) ?? [];
 }
@@ -126,11 +156,11 @@ function setupConfirmar() {
                     } else {
                         const errorData = await res.json();
                         console.error("Error del servidor:", errorData);
-                        alert(errorData.error || "Error al procesar la compra.");
+                        mostrarMensajeModal('Error', errorData.error || "Error al procesar la compra.", 'error');
                     }
                 } catch (e) {
                     console.error("Error al registrar la venta:", e);
-                    alert("Error de red al registrar la venta.");
+                    mostrarMensajeModal('Error', "Error de red al registrar la venta.", 'error');
                     btnModalConfirmar.disabled = false;
                 }
             };
