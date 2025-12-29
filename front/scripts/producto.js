@@ -68,7 +68,7 @@ export class Producto{
 
         localStorage.setItem("carritoDeCompras", JSON.stringify(carritoDeCompras));
         
-       
+
         if (nuevaCantidad > 0) {
             Producto.mostrarModalProductoAgregado(producto, nuevaCantidad, esActualizacion);
         }
@@ -133,7 +133,7 @@ export class Producto{
                 const producto = JSON.parse(productoJSON);
                 
                 
-                const cardElement = botonPresionado.closest('.card');
+                const cardElement = botonPresionado.closest('.card');//contenedor principal card del boton
                 const inputCantidad = cardElement.querySelector('input[type="number"]');
                 const cantidad = parseInt(inputCantidad.value) || 0;
                 

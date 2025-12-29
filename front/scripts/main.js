@@ -1,7 +1,8 @@
 import { Producto } from "./producto.js";
 
 const rutaProductos = "http://localhost:3000/productos";
-const baseUrlBackend = "http://localhost:3000";
+let baseUrlBackend = "";
+const archivoDeAmbiente = "./env.json";
 
 function construirUrlImagen(imagen) {
   if (!imagen) return null;
@@ -51,4 +52,16 @@ async function traerProductos() {
   }
 }
 
-traerProductos();
+document.addEventListener ("DOMContentLoaded", async () =>{
+  const respuestaAmbiente = await fetch(archivoDeAmbiente);
+
+  if (!respuestaAmbiente.ok){
+    console.log("Archivo de ambiente del front no configurado");
+  }
+  
+  const ambiente = await respuestaAmbiente.json();
+  baseUrlBackend = ambiente.api_url;
+
+  traerProductos();
+})
+
