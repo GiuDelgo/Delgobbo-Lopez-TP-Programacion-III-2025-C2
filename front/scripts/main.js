@@ -1,7 +1,7 @@
 import { Producto } from "./producto.js";
 
-const rutaProductos = "http://localhost:3000/productos";
 let baseUrlBackend = "";
+let rutaProductos = `${baseUrlBackend}/productos`;
 const archivoDeAmbiente = "./env.json";
 
 function construirUrlImagen(imagen) {
