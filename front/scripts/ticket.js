@@ -98,8 +98,8 @@ divTotal.appendChild(totalP);
 const btnImprimir = document.getElementById('descargar');
 
 async function guardarTicket(){
-    const url = await cargarConfiguracionTicket();
-    const response = await fetch(url, {
+    const ticketUrl = await cargarConfiguracionTicket();
+    const response = await fetch(ticketUrl, {
         method: 'POST', 
         headers: {
             'Content-Type': 'application/json'
