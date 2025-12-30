@@ -1,4 +1,21 @@
-const baseUrlTicket = "http://localhost:3000/ventas/descargar_ticket";
+let baseUrlTicket = "";
+
+async function cargarConfiguracionTicket() {
+    if (baseUrlTicket) return baseUrlTicket;
+    
+    try {
+        const respuestaAmbiente = await fetch("./env.json");
+        if (respuestaAmbiente.ok) {
+            const ambiente = await respuestaAmbiente.json();
+            baseUrlTicket = `${ambiente.api_url}/ventas/descargar_ticket`;
+            return baseUrlTicket;
+        }
+    } catch (e) {
+        console.error("Error cargando configuración:", e);
+    }
+    baseUrlTicket = "http://localhost:3000/ventas/descargar_ticket"; // Fallback
+    return baseUrlTicket;
+}
 
 const fecha = new Date();
 let año = fecha.getFullYear();
@@ -81,7 +98,8 @@ divTotal.appendChild(totalP);
 const btnImprimir = document.getElementById('descargar');
 
 async function guardarTicket(){
-    const response = await fetch(baseUrlTicket, {
+    const url = await cargarConfiguracionTicket();
+    const response = await fetch(url, {
         method: 'POST', 
         headers: {
             'Content-Type': 'application/json'
@@ -122,6 +140,9 @@ btnImprimir.addEventListener('click', (event) =>{
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Cargar configuración al iniciar
+    cargarConfiguracionTicket();
+    
     setupFinalizar();
 
     let toggle = document.getElementById('container');

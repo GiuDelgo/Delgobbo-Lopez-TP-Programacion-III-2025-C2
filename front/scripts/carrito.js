@@ -130,6 +130,18 @@ function setupConfirmar() {
                 btnModalConfirmar.disabled = true;
 
                 try {
+                    // Cargar configuración
+                    let baseUrl = "http://localhost:3000"; // Fallback
+                    try {
+                        const respuestaAmbiente = await fetch("./env.json");
+                        if (respuestaAmbiente.ok) {
+                            const ambiente = await respuestaAmbiente.json();
+                            baseUrl = ambiente.api_url;
+                        }
+                    } catch (e) {
+                        console.error("Error cargando configuración:", e);
+                    }
+
                     const nombreCliente = localStorage.getItem("nombreUsuarioPapota");
                     const carritoActual = getCarrito();
                     const carritoDeCompras = [];
@@ -142,7 +154,7 @@ function setupConfirmar() {
                         }
                     }
 
-                    const res = await fetch("http://localhost:3000/ventas", {
+                    const res = await fetch(`${baseUrl}/ventas`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ nombreCliente: nombreCliente, carritoDeCompras: carritoDeCompras })

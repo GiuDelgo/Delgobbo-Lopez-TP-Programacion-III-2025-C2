@@ -28,7 +28,21 @@ function mostrarMensajeModal(titulo, mensaje, tipo = 'info') {
     modal.show();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    // Cargar configuración y actualizar link del admin
+    try {
+        const respuestaAmbiente = await fetch("./env.json");
+        if (respuestaAmbiente.ok) {
+            const ambiente = await respuestaAmbiente.json();
+            const adminLink = document.getElementById("adminLink");
+            if (adminLink) {
+                adminLink.href = `${ambiente.api_url}/admin/login`;
+            }
+        }
+    } catch (error) {
+        console.error("Error cargando configuración:", error);
+    }
+
     const input = document.getElementById("input-nombre");
     const btn = document.getElementById("btn-ingresar");
 
