@@ -1,7 +1,7 @@
 import { Producto } from "./producto.js";
 
 let baseUrlBackend = "";
-let rutaProductos = `${baseUrlBackend}/productos`;
+let rutaProductos = "";
 const archivoDeAmbiente = "./env.json";
 
 function construirUrlImagen(imagen) {
@@ -61,6 +61,8 @@ document.addEventListener ("DOMContentLoaded", async () =>{
   
   const ambiente = await respuestaAmbiente.json();
   baseUrlBackend = ambiente.api_url;
+  
+  rutaProductos = `${baseUrlBackend}/productos`;
 
   traerProductos();
 })
