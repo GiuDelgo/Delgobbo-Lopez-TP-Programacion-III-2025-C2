@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "node --watch --require dotenv/config ./index.js",
-    "start": "node index.js",
+    "start": "node --env-file=.env index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -19,9 +19,9 @@
     "express": "^5.1.0",
     "express-session": "^1.18.2",
     "multer": "^2.0.2",
-    "mysql2": "^3.15.3",
     "pdfkit": "^0.17.2",
     "sequelize": "^6.37.7",
+    "sqlite3": "^5.1.7",
     "zod": "^4.1.12"
   }
 }
