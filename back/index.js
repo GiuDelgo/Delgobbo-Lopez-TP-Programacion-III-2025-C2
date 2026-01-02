@@ -14,8 +14,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// CORS
-app.use(cors({ origin: process.env.ORIGIN }));
+// CORS - Normalizar el origen removiendo barras finales para evitar problemas
+const allowedOrigin = process.env.ORIGIN ? process.env.ORIGIN.replace(/\/$/, '') : '*';
+app.use(cors({ 
+    origin: allowedOrigin,
+    credentials: true
+}));
 
 // Sesiones (middleware auth)
 app.use(session({

@@ -49,7 +49,10 @@ htmlFiles.forEach(fileName => {
 // Servir archivos estáticos (scripts, style, imgs, etc.) - DEBE IR AL FINAL
 app.use(express.static(path.join(__dirname)));
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Frontend servidor corriendo en puerto ${PORT}`);
+}).on('error', (err) => {
+    console.error('Error al iniciar el servidor:', err);
+    process.exit(1);
 });
 
