@@ -4,9 +4,15 @@ const path = require("path");
 // Detectar si estamos en producción (PostgreSQL) o desarrollo (SQLite)
 const DATABASE_URL = process.env.DATABASE_URL; // Render proporciona esto automáticamente para PostgreSQL
 
+// Debug: Verificar si DATABASE_URL está disponible
+console.log('DATABASE_URL disponible:', DATABASE_URL ? 'Sí' : 'No');
+if (DATABASE_URL) {
+    console.log('DATABASE_URL (primeros 50 chars):', DATABASE_URL.substring(0, 50) + '...');
+}
+
 let sequelize;
 
-if (DATABASE_URL) {
+if (DATABASE_URL && DATABASE_URL.startsWith('postgres')) {
     // Producción: Usar PostgreSQL de Render
     sequelize = new Sequelize(DATABASE_URL, {
         dialect: 'postgres',
